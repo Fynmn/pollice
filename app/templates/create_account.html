@@ -1,0 +1,51 @@
+{% extends "base1.html" %}
+{% block title %}Create an Account{% endblock %}
+
+{% block content %}
+
+<div class="grid justify-center">
+  <p class="w-24 text-3xl mr-48 pt-20 font-bold text-black text-center" style="font-family: 'Montserrat', sans-serif;">Create Account</p>
+</div>
+
+<form class="container grid justify-center" style="font-family: 'Montserrat', sans-serif;" action="" method="post">
+  <div class="form-group pt-3">
+        <input name="fullname" class="rounded-lg border-2 border-gray-800 bg-transparent placeholder-gray-800 text-xs w-72 h-8 p-3" id="inputFullName" aria-describedby="emailHelp" placeholder="Enter Full Name" required>
+  </div>
+  <div class="form-group">
+        <input name="email" class="rounded-lg border-2 border-gray-800 bg-transparent placeholder-gray-800 text-xs w-72 h-8 p-3" id="InputEmail"  placeholder="Enter Email" required>
+  </div>
+
+  <div class="input-group w-28 mb-3">
+    <select class="appearance-none rounded-lg border-2 border-gray-800 bg-transparent text-gray-800 text-xs w-72 h-9 p-1 pl-2" name="section" id="section" required> 
+      <option value="none" selected disabled>Section</option>
+      <option value="2A">BSCS 2A</option>
+      <option value="2B">BSCS 2B</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <input type="password" name="password1" class="rounded-lg border-2 border-gray-800 bg-transparent placeholder-gray-800 text-xs w-72 h-8 p-3" id="InputPassword" placeholder="Password" required>
+  </div>
+
+  <div class="form-group">
+    <input type="password" name="password2" class="rounded-lg border-2 border-gray-800 bg-transparent placeholder-gray-800 text-xs w-72 h-8 p-3" id="InputPassword2" placeholder="Repeat Password" required>
+  </div>
+  
+  <!-- <div class="form-group text-xs w-72 ml-1" role="alert"> -->
+    <p class="form-group text-xs w-72 ml-1">{{ message }}</p>
+  <!-- </div> -->
+
+  
+
+  <input type="submit" class="bg-gray-800 h-8 rounded-lg text-white text-xs mt-4 hover:bg-gray-500 hover:text-black" value="Sign-up">
+  <div>
+    <p class="text-center text-xs m-2 text-gray-800">or</p>
+  </div>
+  <a href="/login"><input type="button" class="bg-gray-800 h-8 w-72 rounded-lg text-white text-xs hover:bg-gray-500" value="Login"></a>
+
+
+</form>
+
+
+
+{% endblock %}

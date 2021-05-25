@@ -3,6 +3,7 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   purge: {
     enabled: ((process.env.NODE_ENV === 'production') ? true : false),
+    mode: 'layers',
     content: ['./app/templates/**/*.html']
   },
   presets: [],
@@ -34,6 +35,11 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
+      cwc: {
+        red: '#E84977',
+        blue: '#49AADE',
+        gray: '#222222',
+      }
     },
     spacing: {
       px: '1px',
@@ -170,6 +176,7 @@ module.exports = {
       DEFAULT: '1',
     },
     fontFamily: {
+      body: ['Montserrat'],
       sans: [
         'ui-sans-serif',
         'system-ui',

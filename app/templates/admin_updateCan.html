@@ -1,0 +1,40 @@
+{% extends "base3.html" %}
+
+{% block title %}Admin — Update Candidates{% endblock %}
+
+{% block content %}
+<div class="grid justify-center">
+    <div class="mt-36">
+        <h1 class="text-2xl font-semibold">Update Candidates</h1>
+    </div>
+</div>
+<form class="m-3 grid justify-center" action="" method="post">
+    <div class="form-group">
+        <input name="candidate_id" class="rounded-lg border-2 border-gray-800 bg-transparent placeholder-gray-800 text-xs w-72 h-8 p-3" id="InputID"  placeholder="Enter Candidate ID" required>
+    </div>
+    <div class="form-group">
+        <input name="candidate_name" class="rounded-lg border-2 border-gray-800 bg-transparent placeholder-gray-800 text-xs w-72 h-8 p-3" id="InputName"  placeholder="Enter Name" required>
+    </div>
+    <div class="input-group w-28">
+      <select class="appearance-none rounded-lg border-2 border-gray-800 bg-transparent text-gray-800 text-xs w-72 h-9 p-1 pl-2 mb-3" name="candidate_position" id="candidate_position" required> 
+        <option value="none" selected disabled>Enter Position</option>
+        <option value="chairperson">Chairperson</option>
+        <option value="secretary">Secretary</option>
+        <option value="treasurer">Treasurer</option>
+        <option value="auditor">Auditor</option>
+        <option value="business Manager">Business Manager</option>
+        <option value="representative">Representative</option>
+      </select>
+    </div>
+    <div class="input-group w-28">
+        <select class="appearance-none rounded-lg border-2 border-gray-800 bg-transparent text-gray-800 text-xs w-72 h-9 p-1 pl-2" name="section" id="section" required> 
+          <option value="none" selected disabled>Enter Section</option>
+          <option value="2A">BSCS 2A</option>
+          <option value="2B">BSCS 2B</option>
+        </select>
+      </div>
+    <!-- <p class="form-group text-xs w-72 ml-1 text-center">{{ message }}</p> -->
+    <input type="submit" class="bg-gray-800 h-8 rounded-lg text-white text-xs mt-4 h-8 w-72 hover:bg-gray-500" value="Submit">
+  </form>
+
+{% endblock %}
