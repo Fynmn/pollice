@@ -1,0 +1,18 @@
+{"_id":{"$oid":"60a649f0d15e1c875e3f9544"},"id":"0001","section":"2B","position":"chairperson","name":"Jane Cooper"}
+{"_id":{"$oid":"60a64a0dd15e1c875e3f9558"},"id":"0002","section":"2B","position":"chairperson","name":"Blake Smith"}
+{"_id":{"$oid":"60a64a20d15e1c875e3f956a"},"id":"0003","section":"2B","position":"chairperson","name":"Eleanor Jones"}
+{"_id":{"$oid":"60a64a36d15e1c875e3f9576"},"id":"0004","section":"2B","position":"secretary","name":"Jameson Philip"}
+{"_id":{"$oid":"60a64a5dd15e1c875e3f9596"},"id":"0005","section":"2B","position":"secretary","name":"Anna Carlson"}
+{"_id":{"$oid":"60a64a69d15e1c875e3f959e"},"id":"0006","section":"2B","position":"secretary","name":"Bill Nye"}
+{"_id":{"$oid":"60a64a7cd15e1c875e3f95aa"},"id":"0007","section":"2B","position":"treasurer","name":"Lily Gilmore"}
+{"_id":{"$oid":"60a64a98d15e1c875e3f95c0"},"id":"0008","section":"2B","position":"treasurer","name":"Nikita York"}
+{"_id":{"$oid":"60a64abed15e1c875e3f95d8"},"id":"0009","section":"2B","position":"treasurer","name":"Dominique Vasquez"}
+{"_id":{"$oid":"60a64af6d15e1c875e3f95f6"},"id":"0010","section":"2B","position":"auditor","name":"Tyrion Lannister"}
+{"_id":{"$oid":"60a64b08d15e1c875e3f9606"},"id":"0011","section":"2B","position":"auditor","name":"Steve Trevor"}
+{"_id":{"$oid":"60a64b13d15e1c875e3f9610"},"id":"0012","section":"2B","position":"auditor","name":"Barry Allen"}
+{"_id":{"$oid":"60a64b30d15e1c875e3f9624"},"id":"0013","section":"2B","position":"business_manager","name":"Bruce Wayne"}
+{"_id":{"$oid":"60a64b4ed15e1c875e3f963a"},"id":"0014","section":"2B","position":"business_manager","name":"Clark Kent"}
+{"_id":{"$oid":"60a64b9ed15e1c875e3f9667"},"id":"0015","section":"2B","position":"business_manager","name":"Aragorn II Elessar"}
+{"_id":{"$oid":"60a64bb7d15e1c875e3f9676"},"id":"0016","section":"2B","position":"representative","name":"Arwen Undomiel"}
+{"_id":{"$oid":"60a64bc6d15e1c875e3f9685"},"id":"0017","section":"2B","position":"representative","name":"Gandadlf the White"}
+{"_id":{"$oid":"60a64bdbd15e1c875e3f9691"},"id":"0018","section":"2B","position":"representative","name":"Diana Prince"}
