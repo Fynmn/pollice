@@ -7,8 +7,6 @@
 - [ ] Results - in progress
 - [ ] Change display picture - in progress
 
-# Flask + TailwindCSS Starter Template
-
 ## How to run
 1. Create a virtual environment in Python.
 2. Activate python virtual environment with this command: `source venvFolderName/bin/activate` for linux users, kindly see documentation for windows users. Make sure you're on the right directory, specifically where your project folder is.
