@@ -2,9 +2,10 @@
 
 ## Key Features
 - [x] Sign-up, Login, Logout
+- [x] Voting
+- [ ] Results - in progress
 - [ ] News and Updates - in progress, needs data from the results page
 - [ ] Voting timer - in progress
-- [ ] Results - in progress
 - [ ] Change display picture - in progress
 
 ## How to run
