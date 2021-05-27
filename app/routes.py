@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 import re
 import datetime as dt
 from flask import (
@@ -20,7 +21,7 @@ from app.forms import *
 from app.models import *
 
 
-model = Models() # instance of the Model Class
+model = Models()  # instance of the Model Class
 
 
 client = pymongo.MongoClient('localhost', 27017)
@@ -29,6 +30,8 @@ user_records = db.users
 admin_records = db.admin
 candidates_records = db.candidates
 candidates_records_copy = db.candidates_copy
+user_records = db.users
+vote_records = db.votes
 
 user_created = False
 
@@ -49,11 +52,12 @@ def create_account():
     elif request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
+        course = request.form.get("course")
         section = request.form.get("section")
-        
+
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
-        
+
         user_found = user_records.find_one({"name": user})
         email_found = user_records.find_one({"email": email})
         if user_found:
@@ -73,17 +77,18 @@ def create_account():
             return render_template('create_account.html', message=message)
         else:
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
-            user_input = {'name': user, 'email': email, 'password': hashed, 'section': section}
+            user_input = {'name': user, 'email': email,
+                'password': hashed, 'course' : course, 'section': section, 'voted': False}
             user_records.insert_one(user_input)
-            
+
             user_data = user_records.find_one({"email": email})
             new_email = user_data['email']
             session["email"] = new_email
             session["section"] = section
             session["name"] = user
-            session["voted"] = False
-            
-            return render_template('logged_in.html', email=new_email, section=section, user=user)
+            # session["voted"] = False
+
+            return render_template('logged_in.html', email=new_email, user=user)
     return render_template('create_account.html')
 
 
@@ -109,7 +114,8 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        email_found = user_records.find_one({"email": email}) # returns the document of the user
+        # returns the document of the user
+        email_found = user_records.find_one({"email": email})
         if email_found:
             email_val = email_found['email']
             section_val = email_found['section']
@@ -117,14 +123,14 @@ def login():
             # print(email_val)
             # print(section_val)
             passwordcheck = email_found['password']
-            
+
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
                 session["section"] = section_val
                 session["name"] = user_val
-                session["voted"] = False
+                # session["voted"] = False
                 print(voted)
-                
+
                 return redirect(url_for('logged_in'))
             else:
                 if "email" in session:
@@ -140,11 +146,8 @@ def login():
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     if "email" in session:
-        # session.pop("email", None)
-        # session.pop("name", None)
-        # session.pop("section", None)
         session.clear()
-        
+
         return redirect(url_for('login'))
     else:
         return redirect(url_for('create_account'))
@@ -153,7 +156,7 @@ def logout():
 @app.route("/admin", methods=["POST", "GET"])
 def admin():
     if "admin_username" in session:
-        return redirect(url_for("viewCandidate"))
+        return redirect(url_for("admin_panel"))
 
     else:
         return redirect(url_for("admin_login"))
@@ -162,8 +165,7 @@ def admin():
 @app.route("/admin_login", methods=["POST", "GET"])
 def admin_login():
     message = 'Please login to your account'
-    if "admin_username" in session:
-        return redirect(url_for("admin_panel"))
+        # return redirect(url_for("admin_panel"))
 
     if request.method == "POST":
         username = request.form.get("admin_username")
@@ -175,14 +177,14 @@ def admin_login():
         if username_found:
             username_val = username_found['username']
             passwordcheck = username_found['password']
-            
+
             if passwordcheck:
                 session["admin_username"] = username_val
-                
+
                 return redirect(url_for('admin_panel'))
             else:
-                if "admin_username" in session:
-                    return redirect(url_for("admin_panel"))
+                    # if "admin_username" in session:
+                    #     return redirect(url_for("admin_panel"))
                 message = 'Wrong password'
                 return render_template('admin_login.html', message=message)
         else:
@@ -194,94 +196,141 @@ def admin_login():
 @app.route("/admin_panel", methods=["POST", "GET"])
 def admin_panel():
     if "admin_username" in session:
-        return redirect(url_for("viewCandidate"))
+        return redirect(url_for("addCandidate"))
     else:
         return redirect(url_for("admin_login"))
+
+
+# @app.route("/admin_logout", methods=["POST", "GET"])
+# def admin_logout():
+#     if "admin_username" in session:
+#         session.pop("admin_username", None)
+#         return render_template("admin_loggedout.html")
+#     else:
+#         return render_template('admin_login.html')
 
 
 @app.route("/admin_logout", methods=["POST", "GET"])
 def admin_logout():
     if "admin_username" in session:
-        session.pop("admin_username", None)
-        return render_template("admin_loggedout.html")
+        session.clear()
+
+        return redirect(url_for('admin_panel'))
     else:
-        return render_template('admin_login.html')
+        return redirect(url_for('admin_login'))
 
 
 @app.route("/admin/view", methods=["POST", "GET"])
 def viewCandidate():
-    from bson.json_util import dumps, loads
-    result = list(model.pullCandidates())
-    candidateA = []
-    candidateB = []
-            
-    for i in result:
-        if i.get("section") == "2A":
-            candidate = {k: i[k] for k in i.keys() - {'section'} - {'_id'}}
-            candidateA.append(candidate)
-            
-        elif i.get("section") == "2B":
-            candidate = {k: i[k] for k in i.keys() - {'section'} - {'_id'}}
-            candidateB.append(candidate)
+    if "admin_username" in session:
+        from bson.json_util import dumps, loads
+        result = list(model.pullListOfCandidates())
+        print(result)
 
-    candidateA_list = []
-    candidateB_list = []
+        party1 = []
+        party2 = []
+        party3 = []
 
-    for i in range(len(candidateA)):
-        candidateAItem = [candidateA[i]["id"], candidateA[i]["name"], "as", candidateA[i]["position"].title()]
-        candidateA_list.append(" ".join(candidateAItem))
+        for i in result:
+            if i.get("party") == "party1":
+                candidate = {k: i[k] for k in i.keys() - {'party'} - {'_id'}}
+                party1.append(candidate)
+            elif i.get("party") == "party2":
+                candidate = {k: i[k] for k in i.keys() - {'party'} - {'_id'}}
+                party2.append(candidate)
+            elif i.get("party") == "party3":
+                candidate = {k: i[k] for k in i.keys() - {'party'} - {'_id'}}
+                party3.append(candidate)
+
+        party1_list = []
+        party2_list = []
+        party3_list = []
+
+        for i in range(len(party1)):
+            party1Item = [party1[i]["id"], party1[i]["name"],
+                "as", party1[i]["position"].title()]
+            party1_list.append(" ".join(party1Item))
+
+        for i in range(len(party2)):
+            party2Item = [party2[i]["id"], party2[i]["name"],
+                "as", party2[i]["position"].title()]
+            party2_list.append(" ".join(party2Item))
+
+        for i in range(len(party3)):
+            party3Item = [party3[i]["id"], party3[i]["name"],
+                "as", party3[i]["position"].title()]
+            party3_list.append(" ".join(party3Item))
+
+        print(party1_list)
+        print(party2_list)
+        print(party3_list)
+        # return render_template("admin_viewCan.html")
+
+        return render_template("admin_viewCan.html", party1=party1_list, party2=party2_list, party3=party3_list)
     
-    for i in range(len(candidateB)):
-        candidateBItem = [candidateB[i]["id"], candidateB[i]["name"], "as", candidateB[i]["position"].title()]
-        candidateB_list.append(" ".join(candidateBItem))
-    
-    print(candidateA_list)
-    print(candidateB_list)
-
-    return render_template("admin_viewCan.html", candidateA=candidateA_list, candidateB=candidateB_list)
+    else:
+        return redirect(url_for("admin_login"))
 
 
 @app.route("/admin/add", methods=["POST", "GET"])
 def addCandidate():
-    if request.method == "POST":
-        candidate_name = request.form.get("candidate_name")
-        candidate_position = request.form.get("candidate_position")
-        section = request.form.get("section")
+    if "admin_username" in session:
+        if request.method == "POST":
+            candidate_name = request.form.get("candidate_name")
+            candidate_position = request.form.get("candidate_position")
+            candidate_party = request.form.get("candidate_party")
+            candidate_course = request.form.get("candidate_course")
+            candidate_year = request.form.get("candidate_year")
 
-        last_record = candidates_records.find().sort([('_id', -1)]).limit(1)
-        id_num = int(last_record[0]['id']) + 1
-        id = "00"+str(id_num)
+            last_record = candidates_records.find().sort([('_id', -1)]).limit(1)
+            id_num = int(last_record[0]['id']) + 1
+            id = "00"+str(id_num)
 
-        admin_add = {"id": id, 'section': section, "position" : candidate_position, "name" : candidate_name}
-        candidates_records.insert_one(admin_add)
+            admin_add = {"id": id, 'party': candidate_party, 'course': candidate_course,
+                'year': candidate_year, "position": candidate_position, "name": candidate_name}
+            candidates_records.insert_one(admin_add)
 
-    return render_template("admin_addCan.html")
+        return render_template("admin_addCan.html")
+    
+    else:
+        return redirect(url_for("admin_login"))
 
 
 @app.route("/admin/update", methods=["POST", "GET"])
 def updateCandidate():
-    if request.method == "POST":
-        candidate_id = request.form.get("candidate_id")
-        candidate_name = request.form.get("candidate_name")
-        candidate_position = request.form.get("candidate_position")
-        section = request.form.get("section")
+    if "admin_username" in session:
+        if request.method == "POST":
+            candidate_id = request.form.get("candidate_id")
+            candidate_name = request.form.get("candidate_name")
+            candidate_position = request.form.get("candidate_position")
+            candidate_party = request.form.get("candidate_party")
+            candidate_course = request.form.get("candidate_course")
+            candidate_year = request.form.get("candidate_year")
 
-        updateRecordQuery = {"id":candidate_id}
-        newvalues = { "$set": {"id": candidate_id, 'section': section, "position" : candidate_position, "name": candidate_name} }
-        candidates_records.update_one(updateRecordQuery, newvalues)
+            updateRecordQuery = {"id": candidate_id}
+            newvalues = {"$set": {"id": candidate_id, 'party': candidate_party, 'course': candidate_course,
+                'year': candidate_year, "position": candidate_position, "name": candidate_name}}
+            candidates_records.update_one(updateRecordQuery, newvalues)
 
-    return render_template("admin_updateCan.html")
+        return render_template("admin_updateCan.html")
+    
+    else:
+        return redirect(url_for("admin_login"))
 
 
 @app.route("/admin/delete", methods=["POST", "GET"])
 def deleteCandidate():
-    if request.method == "POST":
-        candidate_id = request.form.get("candidate_id")
-        
-        deleteRecordQuery = {"id" : candidate_id}
-        candidates_records.find_one_and_delete(deleteRecordQuery)
+    if "admin_username" in session:
+        if request.method == "POST":
+            candidate_id = request.form.get("candidate_id")
+
+            deleteRecordQuery = {"id": candidate_id}
+            candidates_records.find_one_and_delete(deleteRecordQuery)
+
+        return render_template("admin_deleteCan.html")
     
-    return render_template("admin_deleteCan.html")
+    else:
+        return redirect(url_for("admin_login"))
 
 
 @app.route("/base", methods=["POST", "GET"])
@@ -297,97 +346,104 @@ def base():
 #         section = session["section"]
 
 
-
-
 @app.route("/vote", methods=["POST", "GET"])
 def vote():
     global voted
     if "email" in session:
         user = session["name"]
-        section = session["section"]
-        # print(voted)
-        
-        
-        if section == "2B":
-            list_of_2B_can = model.get2BList()
-            # print(list_of_2B_can)
-            chairperson = []
-            secretary = []
-            treasurer = []
-            auditor = []
-            business_manager = []
-            representative = []
 
-            for num, i in enumerate(list_of_2B_can):
+        if request.method == "GET":
+            if model.getVoted(str(user)):
+                voted = True
+
+            else:
+                voted = False
+        
+
+        listOfCandidates = model.pullCandidates()
+        chairperson = []
+        vice_chairperson = []
+        secretary = []
+        assistant_secretary = []
+        treasurer = []
+        assistant_treasurer = []
+        auditor = []
+        assistant_auditor = []
+        business_manager = []
+        assistant_business_manager = []
+        representative1 = []
+        representative2 = []
+
+        x = 0
+        while x == 0:
+            for num, i in enumerate(listOfCandidates):
                 if i[1] == "chairperson":
                     chairperson.append(i[0])
+                elif i[1] == "vice_chairperson":
+                    vice_chairperson.append(i[0])
                 elif i[1] == "secretary":
                     secretary.append(i[0])
+                elif i[1] == "assistant_secretary":
+                    assistant_secretary.append(i[0])
                 elif i[1] == "treasurer":
                     treasurer.append(i[0])
+                elif i[1] == "assistant_treasurer":
+                    assistant_treasurer.append(i[0])
                 elif i[1] == "auditor":
                     auditor.append(i[0])
+                elif i[1] == "assistant_auditor":
+                    assistant_auditor.append(i[0])
                 elif i[1] == "business_manager":
                     business_manager.append(i[0])
-                elif i[1] == "representative":
-                    representative.append(i[0])
+                elif i[1] == "assistant_business_manager":
+                    assistant_business_manager.append(i[0])
+                elif i[1] == "representative1":
+                    representative1.append(i[0])
+                elif i[1] == "representative2":
+                    representative2.append(i[0])
+            x = 1
+
 
             if request.method == "POST":
                 if "submit_btn" in request.form:
-                        
                     chairperson_vote = request.form.get("chairperson")
+                    vice_chairperson_vote = request.form.get("vice_chairperson")
                     secretary_vote = request.form.get("secretary")
+                    assistant_secretary_vote = request.form.get("assistant_secretary")
                     treasurer_vote = request.form.get("treasurer")
+                    assistant_treasurer_vote = request.form.get("assistant_treasurer")
                     auditor_vote = request.form.get("auditor")
+                    assistant_auditor_vote = request.form.get("assistant_auditor")
                     business_manager_vote = request.form.get("business_manager")
-                    representative_vote = request.form.get("representative")
-                    session["voted"] = True
-                    print("chairperson: ", chairperson_vote, "secretary: ", secretary_vote, "treasurer: ", treasurer_vote, "auditor: ", auditor_vote, "business_manager: ", business_manager_vote, "representative: ", representative_vote)
-                        
-                   
+                    assistant_business_manager_vote = request.form.get("assistant_business_manager")
+                    representative1_vote = request.form.get("representative1")
+                    representative2_vote = request.form.get("representative2")
 
-        elif section == "2A":
-            list_of_2A_can = model.get2AList()
-            # print(list_of_2A_can)
-            chairperson = []
-            secretary = []
-            treasurer = []
-            auditor = []
-            business_manager = []
-            representative = []
+                    candidate_id = model.getIDbyName(str(user))
+                    updateRecordQuery = {"_id": candidate_id}
+                    newvalues = {"$set": {"voted": True}}
+                    user_records.update_one(updateRecordQuery, newvalues)
 
-            for num, i in enumerate(list_of_2A_can):
-                if i[1] == "chairperson":
-                    chairperson.append(i[0])
-                elif i[1] == "secretary":
-                    secretary.append(i[0])
-                elif i[1] == "treasurer":
-                    treasurer.append(i[0])
-                elif i[1] == "auditor":
-                    auditor.append(i[0])
-                elif i[1] == "business_manager":
-                    business_manager.append(i[0])
-                elif i[1] == "representative":
-                    representative.append(i[0])
-            
-        
-            if request.method == "POST":
-                if "submit_btn" in request.form:
+                    votes_add = {"name": str(user), "chairperson": chairperson_vote, "vice_chairperson" : vice_chairperson_vote, "secretary" : secretary_vote, "assistant_secretary" : assistant_secretary_vote, "treasurer" : treasurer_vote, "assistant_treasurer" : assistant_treasurer_vote, "auditor":
+                          auditor_vote, "assistant_auditor" : assistant_auditor_vote, "business_manager" : business_manager_vote, "assistant_business_manager" : assistant_business_manager_vote, "representative1" : representative1_vote, "representative2" :representative2_vote}
                     
-                    chairperson_vote = request.form.get("chairperson")
-                    secretary_vote = request.form.get("secretary")
-                    treasurer_vote = request.form.get("treasurer")
-                    auditor_vote = request.form.get("auditor")
-                    business_manager_vote = request.form.get("business_manager")
-                    representative_vote = request.form.get("representative")
-                    session["voted"] = True
+                    vote_records.insert_one(votes_add)
+
+                    if model.getVoted(str(user)):
+                        voted = True
+                    else:
+                        voted = False
                     
-                    print("chairperson: ", chairperson_vote, "secretary: ", secretary_vote, "treasurer: ", treasurer_vote, "auditor: ", auditor_vote, "business_manager: ", business_manager_vote, "representative: ", representative_vote)
-                    
-        return render_template('vote.html', user = user, chairperson=chairperson, secretary=secretary, treasurer=treasurer, auditor=auditor, business_manager=business_manager,representative=representative, voted=session["voted"])
+                    print("chairperson: ", chairperson_vote, "vice_chairperson: ", vice_chairperson_vote, "secretary: ", secretary_vote, "assistant_secretary: ", assistant_secretary_vote, "treasurer: ", treasurer_vote, "assistant_treasurer: ", assistant_treasurer_vote, "auditor: ",
+                          auditor_vote, "assistant_auditor: ", assistant_auditor_vote, "business_manager: ", business_manager_vote, "assistant_business_manager: ", assistant_business_manager_vote, "representative1: ", representative1_vote, "representative2: ", representative2_vote)
+
+
+
+        return render_template('vote.html', user = user, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, representative1=representative1, representative2=representative2, voted=voted)
     else:
         return redirect(url_for("login"))
 
-# @app.get("/about")
-# def about():
-#     return render_template("about.html")
+
+@app.route("/about", methods=["POST", "GET"])
+def about():
+    return render_template("about.html")

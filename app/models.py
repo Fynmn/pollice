@@ -33,9 +33,22 @@ class Models:
         client = pymongo.MongoClient('localhost', 27017)
         db = client.get_database('election-system-test')
         candidates_records = db.candidates
-        listOfCandidates = candidates_records.find()
+        result = candidates_records.find()
 
-        return listOfCandidates
+        listOfCandidates = []
+                    
+        for i in result:
+            candidate = {k: i[k] for k in i.keys() - {'_id'} - {'id'} - {'course'} - {'section'}}
+            listOfCandidates.append(candidate)
+            
+        
+        candidates_list = []
+
+        for i in range(len(listOfCandidates)):
+            candidateItem = [listOfCandidates[i]["name"], listOfCandidates[i]["position"], listOfCandidates[i]["party"]]
+            candidates_list.append(candidateItem)
+            
+        return candidates_list
 
 
     
@@ -90,5 +103,47 @@ class Models:
             
         return candidateA_list
     
+    # Function that gets the voted value from the databse and returns it
+    def getVoted(self, name):
+        client = pymongo.MongoClient('localhost', 27017)
+        db = client.get_database('election-system-test')
+        users_records = db.users
 
-Models.get2BList
+        voted = users_records.find_one({'name': name})
+
+        for i,j in voted.items():
+            if i == 'voted':
+                if j == False:
+                    print("False")
+                    return False
+                elif j == True:
+                    print("True")
+                    return True
+                else:
+                    print("can't find value")
+    
+    #function that gets object id by name
+    def getIDbyName(self, name):
+        client = pymongo.MongoClient('localhost', 27017)
+        db = client.get_database('election-system-test')
+        user_records = db.users
+
+        record = user_records.find_one({'name' : name})
+
+        return record.get('_id')
+
+    
+    def pullListOfCandidates(self):
+        client = pymongo.MongoClient('localhost', 27017)
+        db = client.get_database('election-system-test')
+        candidates_records = db.candidates
+
+        result = candidates_records.find()
+
+        return result
+
+
+    
+
+    
+

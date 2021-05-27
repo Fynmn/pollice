@@ -1,9 +1,9 @@
-{% extends "base3.html" %}
+{% extends "base6.html" %}
 
 {% block title %}Admin — Add Candidates{% endblock %}
 
 {% block content %}
-<div class="grid justify-center">
+<!-- <div class="grid justify-center">
     <div class="mt-40">
         <h1 class="text-2xl font-semibold">Add Candidates</h1>
     </div>
@@ -30,8 +30,162 @@
           <option value="2B">BSCS 2B</option>
         </select>
       </div>
-    <!-- <p class="form-group text-xs w-72 ml-1 text-center">{{ message }}</p> -->
     <input type="submit" class="bg-gray-800 h-8 rounded-lg text-white text-xs mt-4 h-8 w-72 hover:bg-gray-500" value="Submit">
-  </form>
+  </form> -->
+
+
+<!-- Title -->
+<div class="p-0 mt-12">
+  <div class="p-0 mb-12 sm:p-8 sm:pt-0 lg:p-28 lg:pt-0 ">
+    <!-- Content -->
+    <div class="filter backdrop-blur-3xl w-auto h-auto p-5 border border-white lg:w-auto lg:flex lg:place-self-center"
+      style=" background: linear-gradient(118.32deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%);
+                                backdrop-filter: blur(1000px);
+                                border-radius: 16px;">
+      <div class="m-4 grid grid-cols-1 gap-6 flex flex-row flex-grow h-auto justify-items-center content-center">
+        <h1
+          class="text-xl font-bold tracking-wide flex justify-center sm:text-2xl md:text-3xl lg:text-4xl sm:p-1 md:p-3 lg:p-4 text-purple-900">
+          Add Candidates</h1>
+        <form method="POST" class="w-full mx-auto space-y-4">
+          <!-- Candidate Name -->
+          <div>
+            <div class="relative">
+              <input type="text" id="candidate_name" name="candidate_name" required
+                class="p-4 w-full h-10 rounded-xl pl-10 text-sm focus:outline-none border border-purple-800 font-light bg-transparent placeholder-purple-800"
+                placeholder="Enter Name" name="candidate_name" id="candidate_name">
+              <svg class="w-4 h-4 absolute top-0 m-3 text-purple-800" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Candidate Position -->
+          <div>
+            <div class="relative">
+              <select required
+                class="appearance-none text-purple-800 w-full h-10 rounded-xl pl-10 text-sm focus:outline-none border border-purple-800 font-light bg-transparent placeholder-purple-800"
+                name="candidate_position" id="candidate_position">
+                <option value="none" selected disabled>Select Position</option>
+                <option value="chairperson">Chairperson</option>
+                <option value="vice_chairperson">Vice Chairperson</option>
+                <option value="secretary">Secretary</option>
+                <option value="assistant_secretary">Assistant Secretary</option>
+                <option value="treasurer">Treasurer</option>
+                <option value="assistant_treasurer">Assistant Treasurer</option>
+                <option value="auditor">Auditor</option>
+                <option value="assistant_auditor">Assistant Auditor</option>
+                <option value="business_manager">Business Manager</option>
+                <option value="assistant_business_manager">Assistant Business Manager</option>
+                <option value="representative1">Representative 1</option>
+                <option value="representative2">Representative 2</option>
+              </select>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute top-0 m-3 text-purple-800"
+                viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+              </svg>
+            </div>
+          </div>
+          <!-- Candidate Party -->
+          <div>
+            <div class="relative">
+              <select required
+                class="appearance-none text-purple-800 w-full h-10 rounded-xl pl-10 text-sm focus:outline-none border border-purple-800 font-light bg-transparent placeholder-purple-800"
+                name="candidate_party" id="candidate_party">
+                <option value="none" selected disabled>Select Party</option>
+                <option value="party1">Party 1</option>
+                <option value="party2">Party 2</option>
+                <option value="party3">Party 3</option>
+              </select>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute top-0 m-3 text-purple-800"
+                viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Candidate Course -->
+          <div>
+            <div class="relative">
+              <select required
+                class="appearance-none text-purple-800 w-full h-10 rounded-xl pl-10 text-sm focus:outline-none border border-purple-800 font-light bg-transparent placeholder-purple-800"
+                name="candidate_course" id="candidate_course">
+                <option value="none" selected disabled>Select Course</option>
+                <option value="BSCS">BSCS</option>
+                <option value="BSEMC">BSEMC</option>
+                <option value="BSIS">BSIS</option>
+                <option value="BSIT">BSIT</option>
+              </select>
+              <svg class="w-4 h-4 absolute top-0 m-3 text-purple-800" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Candidate Year -->
+          <div>
+            <div class="relative">
+              <select required
+                class="appearance-none text-purple-800 w-full h-10 rounded-xl pl-10 text-sm focus:outline-none border border-purple-800 font-light bg-transparent placeholder-purple-800"
+                name="candidate_year" id="candidate_year">
+                <option value="none"selected disabled>Select Year & Section</option>
+                <option value="1A">1A</option>
+                <option value="1B">1B</option>
+                <option value="2A">2A</option>
+                <option value="2B">2B</option>
+                <option value="3A">3A</option>
+                <option value="3B">3B</option>
+              </select>
+              <svg class="w-4 h-4 absolute top-0 m-3 text-purple-800" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+
+
+          <!-- Submit Button -->
+          <div>
+            <div class="relative flex flex-row-reverse">
+              <input type="submit" name="submit_btn" value="Submit"
+                class="p-2 w-50 h-10 rounded-xl text-white text-xs sm:text-xs md:text-sm lg:text-md border border-purple-800 font-bold bg-purple-800"
+                placeholder="Submit">
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+
+
+    <!-- Real Time Update Message -->
+    <div
+      class="filter backdrop-blur-3xl w-auto h-auto mt-6 p-5 border border-white lg:w-auto lg:flex lg:place-self-center"
+      style=" background: linear-gradient(118.32deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%);
+                                backdrop-filter: blur(1000px);
+                                border-radius: 16px;">
+      <div class="m-2 grid grid-cols-1 gap-6 flex flex-col flex-grow h-auto space-y-1">
+        <div class="pl-2 flex flex-row items-center w-full h-full">
+          <img src="img/heading-icons/Final Profile pic(1).svg" class="w-8 h-8 m-2" alt="">
+          <span class="">
+            <p class="text-xs sm:text-xs md:text-sm lg:text-md">Jane Cooper has been added as Chairperson.</p>
+          </span>
+        </div>
+        <div class="pl-2 flex flex-row items-center w-full h-full">
+          <img src="img/heading-icons/Final Profile pic(1).svg" class="w-8 h-8 m-2" alt="">
+          <span class="">
+            <p class="text-xs sm:text-xs md:text-sm lg:text-md">Eleanor Pena has been added as Vice Chairperson.</p>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

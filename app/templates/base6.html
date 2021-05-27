@@ -5,9 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="Logo Icon" href="img/Main Logo.svg">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="Logo Icon" href="{{ url_for('static', filename='img/Main Logo.svg') }}"> 
+    <!-- CSS and other dependecies-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/main.css') }}">
-    <title>Pollice Base 2</title>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
 </head>
 
 <!-- Body Class -->
@@ -19,7 +26,7 @@
         <div style="z-index: -10" 
         class="absolute bg-gradient-to-br from-green-100 via-green-50 to-purple-300 h-full w-full">
             <!--Background Image-->
-            <img src="{{ url_for('static', filename='dist/img/background-icons/BGCubes.svg') }}" 
+            <img src="{{ url_for('static', filename='img/background-icons/BGCubes.svg') }}"
                 class="absolute max-w-screen-lg max-h-screen ml-32 inset-y-0 -right-52 opacity-30 bg-auto filter blur-sm sm:bg-fixed sm:h-screen sm:opacity-30 sm:max-w-screen-lg sm:-right-28 md:max-w-screen-lg md:-right-28 lg:-right-16 lg:max-w-screen-2xl"
                 alt="" srcset="">
         </div>
@@ -35,7 +42,7 @@
                     class="flex flex-col w-full h-full justify-around items-center text-xl font-normal text-white lg:space-y-10 lg:p-10">
                     <!-- Main Logo -->
                     <a href="error.html" class="hidden lg:block">
-                        <img class="object-top mt-4 filter drop-shadow-lg" src="{{ url_for('static', filename='dist/img/Main Logo.svg') }}" alt=""> 
+                        <img class="object-top mt-4 filter drop-shadow-lg" src="{{ url_for('static', filename='img/Main Logo.svg') }}" alt=""> 
                         <p class="filter drop-shadow-xl text-2xl flex justify-center font-light tracking-wide"
                             style="color: #16BDCA;">
                             Pollice
@@ -44,57 +51,29 @@
                     <!-- Flex List Of NavLinks -->
                     <div
                         class="flex w-full flex-row justify-evenly items-center py-3 px-3 sm:flex sm:justify-evenly lg:flex-col lg:space-y-10 lg:items-start lg:place-content-center">
-                        <!-- Home -->
-                        <a href="" class="nav-item-active">
-                            <!--<svg class="w-6 h-6 md:w-7 md:h-7" width="35" height="35" viewBox="0 0 35 35" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M17.9049 5.41238C17.7963 5.30111 17.6519 5.23901 17.5016 5.23901C17.3514 5.23901 17.207 5.30111 17.0984 5.41238L3.67448 19.1523C3.61747 19.2107 3.57211 19.2809 3.54116 19.3587C3.5102 19.4364 3.49429 19.5201 3.49437 19.6046L3.49219 32.5C3.49219 33.163 3.73802 33.7989 4.1756 34.2678C4.61319 34.7366 5.20668 35 5.82552 35H12.8328C13.1422 35 13.439 34.8683 13.6577 34.6339C13.8765 34.3995 13.9995 34.0815 13.9995 33.75V23.125C13.9995 22.9592 14.0609 22.8002 14.1703 22.683C14.2797 22.5658 14.4281 22.5 14.5828 22.5H20.4161C20.5708 22.5 20.7192 22.5658 20.8286 22.683C20.938 22.8002 20.9994 22.9592 20.9994 23.125V33.75C20.9994 34.0815 21.1224 34.3995 21.3412 34.6339C21.5599 34.8683 21.8567 35 22.1661 35H29.1705C29.7893 35 30.3828 34.7366 30.8204 34.2678C31.258 33.7989 31.5038 33.163 31.5038 32.5V19.6046C31.5039 19.5201 31.488 19.4364 31.457 19.3587C31.4261 19.2809 31.3807 19.2107 31.3237 19.1523L17.9049 5.41238Z"
-                                    fill="white" />
-                                <path
-                                    d="M34.6288 16.5743L29.1746 10.9836V2.50001C29.1746 2.16849 29.0517 1.85054 28.8329 1.61612C28.6141 1.3817 28.3174 1.25001 28.008 1.25001H24.508C24.1986 1.25001 23.9018 1.3817 23.683 1.61612C23.4642 1.85054 23.3413 2.16849 23.3413 2.50001V5.00002L19.118 0.67344C18.7228 0.245313 18.1351 0 17.5 0C16.8671 0 16.2808 0.245314 15.8856 0.674222L0.376277 16.5727C-0.0772638 17.0415 -0.134139 17.8126 0.278569 18.3204C0.382206 18.4486 0.509102 18.5528 0.651535 18.6268C0.793969 18.7007 0.94896 18.7429 1.10708 18.7506C1.26519 18.7584 1.42312 18.7316 1.57126 18.6718C1.7194 18.6121 1.85465 18.5207 1.96877 18.4032L17.0989 2.91251C17.2075 2.80125 17.3519 2.73915 17.5022 2.73915C17.6524 2.73915 17.7968 2.80125 17.9054 2.91251L33.037 18.4032C33.2599 18.6322 33.5585 18.7572 33.8673 18.7508C34.176 18.7443 34.4698 18.607 34.6842 18.3688C35.1319 17.872 35.0947 17.0516 34.6288 16.5743Z"
-                                    fill="white" />
-                            </svg>
-                            <span class="hidden lg:inline">Home</span>-->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 md:w-8 md:h-8 lg:w-9 lg:h-9"
-                                viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                            </svg>
-                            <span class="hidden lg:inline">Home</span>
+                        <!-- Add -->
+                        <a href="/admin/add" class="nav-item-active">
+                            <span class="iconify" data-inline="false" data-icon="carbon:add-filled" style="color: #5454c5; font-size: 35px;"></span>
+                            <span class="hidden lg:inline">Add</span>
                         </a>
-                        <!-- Vote -->
-                        <a href="" class="nav-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 md:w-8 md:h-8 lg:w-9 lg:h-9"
-                                viewBox="0 0 20 20" fill="currentColor">
-                                <path
-                                    d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
-                            </svg>
-                            <span class="hidden lg:inline">Vote</span>
+                        <!-- Delete -->
+                        <a href="/admin/delete" class="nav-item">
+                            <span class="iconify" data-inline="false" data-icon="fluent:delete-20-filled" style="color: #5454c5; font-size: 35px;"></span>
+                            <span class="hidden lg:inline">Delete</span>
                         </a>
-                        <!-- Result -->
-                        <a href="" class="nav-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 md:w-8 md:h-8 lg:w-9 lg:h-9"
-                                viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="hidden lg:inline">Result</span>
+                        <!-- Update -->
+                        <a href="/admin/update" class="nav-item">
+                            <span class="iconify" data-inline="false" data-icon="ic:outline-drive-file-rename-outline" style="color: #5454c5; font-size: 35px;"></span>
+                            <span class="hidden lg:inline">Update</span>
                         </a>
-                        <!-- About -->
-                        <a href="" class="nav-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 md:w-8 md:h-8 lg:w-9 lg:h-9"
-                                viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z"
-                                    clip-rule="evenodd" />
-                                <path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
-                            </svg>
-                            <span class="hidden lg:inline">About</span>
+                        <!-- View -->
+                        <a href="/admin/view" class="nav-item">
+                            <span class="iconify" data-inline="false" data-icon="carbon:document-view" style="color: #5454c5; font-size: 35px;"></span>
+                            <span class="hidden lg:inline">View</span>
                         </a>
                     </div>
                     <!-- Logout -->
-                    <a href="#" class="hidden lg:block">
+                    <a href="/logout" class="hidden lg:block">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-8=7" viewBox="0 0 20 20" fill="#4338CA">
                             <path fill-rule="evenodd"
                                 d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
@@ -112,22 +91,25 @@
                         <div class="flex flex-col items-start ">
                             <h1
                                 class="text-2xl flex flex-row items-center font-medium tracking-wider sm:text-4xl sm:mt-1 md:text-4xl md:mt-0 lg:text-5xl lg:mt-0  ">
-                                Hello, Anna
+                                Hello, Admin
                             </h1>
                             <p
-                                class="flex flex-row items-center font-thin text-xs -mt-1 tracking-wide sm:tracking-wider sm:text-sm md:text-base lg:tracking-widest ">
+                                class="font-semibold text-blue-700 flex flex-row items-center font-thin text-xs -mt-1 tracking-wide sm:tracking-wider sm:text-sm md:text-base lg:tracking-widest ">
                                 Welcome back to Pollice!
                             </p>
-                            <img class="absolute bottom-0 h-32 sm:h-44" src="{{ url_for('static', filename='dist/img/heading-icons/HandNav.svg') }} " alt="" 
+                            <img class="absolute bottom-0 h-32 sm:h-44" src="{{ url_for('static', filename='img/heading-icons/HandNav.svg') }}" alt=""
                                 srcset="" style="right: 8px">
                         </div>
                     </div>
                     <a href="#">
                         <img class="filter drop-shadow-xl mt-2 ml-6 w-16 h-16 sm:w-20 sm:h-20 sm:mt-6 sm:mr-8 md:w-24 md:h-24 md:mr-8 md:mt-6"
-                            src="{{ url_for('static', filename='dist/img/heading-icons/Final Profile pic(1).svg') }}" alt="" srcset=""> 
+                            src="{{ url_for('static', filename='img/heading-icons/Final Profile pic(1).svg') }}" alt="" srcset="">
+                            
                     </a>
                 </div>
                 <!-- Title -->
+                {% block content %}
+                {% endblock%}
 
             </div>
         </div>
