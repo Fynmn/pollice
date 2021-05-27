@@ -6,6 +6,7 @@
 - [ ] Results - in progress
 - [ ] News and Updates - in progress, needs data from the results page
 - [ ] Voting timer - in progress
+- [ ] Profile page - in progress
 - [ ] Change display picture - in progress
 
 ## How to run
