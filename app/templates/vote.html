@@ -33,8 +33,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in chairperson %}
-                            <label for="chairperson">{{ candidate }}</label>
-                            <input type="radio" id="chairperson" name="chairperson" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="chairperson" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -57,8 +57,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in vice_chairperson %}
-                            <label for="vice_chairperson">{{ candidate }}</label>
-                            <input type="radio" id="vice_chairperson" name="vice_chairperson" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="vice_chairperson" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -81,8 +81,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in secretary %}
-                            <label for="secretary">{{ candidate }}</label>
-                            <input type="radio" id="secretary" name="secretary" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="secretary" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -105,8 +105,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in assistant_secretary %}
-                            <label for="assistant_secretary">{{ candidate }}</label>
-                            <input type="radio" id="assistant_secretary" name="assistant_secretary" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="assistant_secretary" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -129,8 +129,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in treasurer %}
-                            <label for="treasurer">{{ candidate }}</label>
-                            <input type="radio" id="treasurer" name="treasurer" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="treasurer" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -153,8 +153,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in assistant_treasurer %}
-                            <label for="assistant_treasurer">{{ candidate }}</label>
-                            <input type="radio" id="assistant_treasurer" name="assistant_treasurer" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="assistant_treasurer" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -177,8 +177,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in auditor %}
-                            <label for="auditor">{{ candidate }}</label>
-                            <input type="radio" id="auditor" name="auditor" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="auditor" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -201,8 +201,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in assistant_auditor %}
-                            <label for="assistant_auditor">{{ candidate }}</label>
-                            <input type="radio" id="assistant_auditor" name="assistant_auditor" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="assistant_auditor" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -225,8 +225,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in business_manager %}
-                            <label for="business_manager">{{ candidate }}</label>
-                            <input type="radio" id="business_manager" name="business_manager" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="business_manager" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -249,8 +249,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in assistant_business_manager %}
-                            <label for="assistant_business_manager">{{ candidate }}</label>
-                            <input type="radio" id="assistant_business_manager" name="assistant_business_manager" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="assistant_business_manager" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -273,8 +273,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in representative1 %}
-                            <label for="representative1">{{ candidate }}</label>
-                            <input type="radio" id="representative1" name="representative1" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="representative1" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
@@ -297,8 +297,8 @@
                     <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
                         <span>
                             {% for candidate in representative2 %}
-                            <label for="representative2">{{ candidate }}</label>
-                            <input type="radio" id="representative2" name="representative2" value="{{ candidate }}" required><br>
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="representative2" value="{{ candidate }}" required><br>
                             {% endfor %}
                         </span>
                     </div>
