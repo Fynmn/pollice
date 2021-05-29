@@ -359,7 +359,6 @@ def vote():
             else:
                 voted = False
         
-
         listOfCandidates = model.pullCandidates()
         chairperson = []
         vice_chairperson = []
@@ -374,8 +373,8 @@ def vote():
         representative1 = []
         representative2 = []
 
-        x = 0
-        while x == 0:
+        x = True
+        while x:
             for num, i in enumerate(listOfCandidates):
                 if i[1] == "chairperson":
                     chairperson.append(i[0])
@@ -401,7 +400,7 @@ def vote():
                     representative1.append(i[0])
                 elif i[1] == "representative2":
                     representative2.append(i[0])
-            x = 1
+            x = False
 
 
             if request.method == "POST":
@@ -442,6 +441,10 @@ def vote():
         return render_template('vote.html', user = user, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, representative1=representative1, representative2=representative2, voted=voted)
     else:
         return redirect(url_for("login"))
+
+@app.route("/results", methods=["POST", "GET"])
+def results():
+    return render_template("results.html")
 
 
 @app.route("/about", methods=["POST", "GET"])
