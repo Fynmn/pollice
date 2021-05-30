@@ -12,7 +12,7 @@ from flask import (
 
     
 class Models:
-                # Function that gets candidates from database and returns them in dictionary format
+    # A Function that gets candidates from database and returns them in dictionary format
     def getCandidates(self):
         client = pymongo.MongoClient('localhost', 27017)
         db = client.get_database('election-system-test')
@@ -28,7 +28,7 @@ class Models:
 
         return candidates
 
-    #Function that gets candidates from database
+    # A Function that gets candidates from database
     def pullCandidates(self):
         client = pymongo.MongoClient('localhost', 27017)
         db = client.get_database('election-system-test')
@@ -51,13 +51,7 @@ class Models:
         return candidates_list
 
 
-    
-    
-    def deleteCandidate(self):
-        pass
-
-
-    # Function that returns name and position of candidates from 2B
+    # A Function that returns name and position of candidates from 2B
     def get2BList(self):
         client = pymongo.MongoClient('localhost', 27017)
         db = client.get_database('election-system-test')
@@ -103,7 +97,7 @@ class Models:
             
         return candidateA_list
     
-    # Function that gets the voted value from the databse and returns it
+    # A Function that gets the voted value from the databse and returns it
     def getVoted(self, name):
         client = pymongo.MongoClient('localhost', 27017)
         db = client.get_database('election-system-test')
@@ -122,7 +116,7 @@ class Models:
                 else:
                     print("can't find value")
     
-    #function that gets object id by name
+    # A Function that gets object id by name
     def getIDbyName(self, name):
         client = pymongo.MongoClient('localhost', 27017)
         db = client.get_database('election-system-test')
@@ -141,6 +135,79 @@ class Models:
         result = candidates_records.find()
 
         return result
+
+    
+    # A Function that grabs the votes documents and
+    # candidates documents in or database and then
+    # returns a dictionary of votes
+    # {position: [name, party, votes], position : [name, party, votes]}
+
+
+
+    def getVotes(self):
+        client = pymongo.MongoClient('localhost', 27017)
+        db = client.get_database('election-system-test')
+        votes_records = db.votes
+        candidates_records = db.candidates
+
+        candidate_list = candidates_records.find()
+        candidate_description = [] #[name, party, votes]
+        total = []
+
+        votes = {} # {position: [name, party, votes], position : [name, party, votes]}
+
+        for i in candidate_list:
+            for key, value in i.items():
+                if key == "name":
+                    
+
+                    list_position = i["position"].split("_")
+                    position = " ".join(list_position).title()
+
+                    # candidate_description = [i["name"], i["party"]]
+                    # candidate_description.append(votes_records.count_documents({i["position"] : i["name"]})/float(votes_records.count_documents({}))*100)
+                    
+                    # votes = {position: []}
+                    # votes[position].append(candidate_description)
+                    votes = {position: []}
+                    # votes[position].append(i["position"])
+                    votes[position].append(i["name"])
+                    votes[position].append(i["party"])
+                    votes[position].append(str(int((votes_records.count_documents({i["position"] : i["name"]})/float(votes_records.count_documents({}))*100))) + "%")
+
+                    total.append(votes)
+        
+        print(total)
+            
+                
+        return total
+    
+
+    def getPositions(self):
+        client = pymongo.MongoClient('localhost', 27017)
+        db = client.get_database('election-system-test')
+        candidates_records = db.candidates
+
+        candidates = candidates_records.find()
+
+        positions = []
+        positions_parsed = []
+
+        for i in candidates:
+            if i["position"] not in positions:
+                # list_position = i["position"].split("_")
+                # position = " ".join(list_position).title()
+                # positions.append(position)
+                positions.append(i["position"])
+            else:
+                pass
+        
+        for i in positions:
+            list_positions = i.split("_")
+            parsed_list = " ".join(list_positions).title()
+            positions_parsed.append(parsed_list)
+
+        return positions_parsed
 
 
     

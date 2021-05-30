@@ -360,6 +360,7 @@ def vote():
                 voted = False
         
         listOfCandidates = model.pullCandidates()
+        print(listOfCandidates)
         chairperson = []
         vice_chairperson = []
         secretary = []
@@ -442,9 +443,25 @@ def vote():
     else:
         return redirect(url_for("login"))
 
+
 @app.route("/results", methods=["POST", "GET"])
 def results():
-    return render_template("results.html")
+    if "email" in session:
+        user = session["name"]
+        votes = model.getVotes()
+        positions = model.getPositions()
+
+        return render_template("results.html", votes=votes, positions=positions)
+    
+    else:
+        return redirect(url_for("login"))
+
+
+@app.route("/results1", methods=["POST", "GET"])
+def results1():
+    votes = model.getVotes()
+
+    return render_template("results copy.html", votes=votes)
 
 
 @app.route("/about", methods=["POST", "GET"])
