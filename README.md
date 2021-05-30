@@ -3,7 +3,7 @@
 ## Key Features
 - [x] Sign-up, Login, Logout
 - [x] Voting
-- [ ] Results - in progress
+- [x] Results
 - [ ] News and Updates - in progress, needs data from the results page
 - [ ] Voting timer - in progress
 - [ ] Profile page - in progress
