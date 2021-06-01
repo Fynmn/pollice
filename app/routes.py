@@ -58,6 +58,10 @@ def create_account():
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
 
+        domain_allowed = ["wvsu.edu.ph"]
+        email_domain = email.split('@')[-1]
+        
+
         user_found = user_records.find_one({"name": user})
         email_found = user_records.find_one({"email": email})
         if user_found:
@@ -75,6 +79,9 @@ def create_account():
         if not any([char.isupper() for char in password1]):
             message = 'The password should have atleast one uppercase letter'
             return render_template('create_account.html', message=message)
+        if email_domain not in domain_allowed:
+            message = 'Only valid wvsu email addresses are allowed to register.'
+            return render_template('create_account.html', message=message)
         else:
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
             user_input = {'name': user, 'email': email,
@@ -87,8 +94,10 @@ def create_account():
             session["section"] = section
             session["name"] = user
             # session["voted"] = False
+            user = session["name"].split(" ")
+            usn = user[0]
 
-            return render_template('logged_in.html', email=new_email, user=user)
+            return render_template('logged_in.html', email=new_email, usn=usn)
     return render_template('create_account.html')
 
 
@@ -97,8 +106,9 @@ def logged_in():
     if "email" in session:
         email = session["email"]
         section = session["section"]
-        user = session["name"]
-        return render_template('logged_in.html', email=email, section=section, user=user)
+        user = session["name"].split(" ")
+        usn = user[0]
+        return render_template('logged_in.html', email=email, section=section, user=usn)
     else:
         return redirect(url_for("login"))
 
@@ -351,6 +361,8 @@ def vote():
     global voted
     if "email" in session:
         user = session["name"]
+        the_user = session["name"].split(" ")
+        usn = the_user[0]
 
         if request.method == "GET":
             if model.getVoted(str(user)):
@@ -360,7 +372,7 @@ def vote():
                 voted = False
         
         listOfCandidates = model.pullCandidates()
-        print(listOfCandidates)
+        # print(listOfCandidates)
         chairperson = []
         vice_chairperson = []
         secretary = []
@@ -371,6 +383,8 @@ def vote():
         assistant_auditor = []
         business_manager = []
         assistant_business_manager = []
+        pio = []
+        assistant_pio = []
         representative1 = []
         representative2 = []
 
@@ -397,6 +411,10 @@ def vote():
                     business_manager.append(i[0])
                 elif i[1] == "assistant_business_manager":
                     assistant_business_manager.append(i[0])
+                elif i[1] == "pio":
+                    pio.append(i[0])
+                elif i[1] == "assistant_pio":
+                    assistant_pio.append(i[0])
                 elif i[1] == "representative1":
                     representative1.append(i[0])
                 elif i[1] == "representative2":
@@ -416,6 +434,8 @@ def vote():
                     assistant_auditor_vote = request.form.get("assistant_auditor")
                     business_manager_vote = request.form.get("business_manager")
                     assistant_business_manager_vote = request.form.get("assistant_business_manager")
+                    pio_vote = request.form.get("pio")
+                    assistant_pio_vote = request.form.get("assistant_pio")
                     representative1_vote = request.form.get("representative1")
                     representative2_vote = request.form.get("representative2")
 
@@ -425,7 +445,7 @@ def vote():
                     user_records.update_one(updateRecordQuery, newvalues)
 
                     votes_add = {"name": str(user), "chairperson": chairperson_vote, "vice_chairperson" : vice_chairperson_vote, "secretary" : secretary_vote, "assistant_secretary" : assistant_secretary_vote, "treasurer" : treasurer_vote, "assistant_treasurer" : assistant_treasurer_vote, "auditor":
-                          auditor_vote, "assistant_auditor" : assistant_auditor_vote, "business_manager" : business_manager_vote, "assistant_business_manager" : assistant_business_manager_vote, "representative1" : representative1_vote, "representative2" :representative2_vote}
+                          auditor_vote, "assistant_auditor" : assistant_auditor_vote, "business_manager" : business_manager_vote, "assistant_business_manager" : assistant_business_manager_vote, "pio" : pio_vote, "assistant_pio" : assistant_pio_vote, "representative1" : representative1_vote, "representative2" :representative2_vote}
                     
                     vote_records.insert_one(votes_add)
 
@@ -434,12 +454,12 @@ def vote():
                     else:
                         voted = False
                     
-                    print("chairperson: ", chairperson_vote, "vice_chairperson: ", vice_chairperson_vote, "secretary: ", secretary_vote, "assistant_secretary: ", assistant_secretary_vote, "treasurer: ", treasurer_vote, "assistant_treasurer: ", assistant_treasurer_vote, "auditor: ",
-                          auditor_vote, "assistant_auditor: ", assistant_auditor_vote, "business_manager: ", business_manager_vote, "assistant_business_manager: ", assistant_business_manager_vote, "representative1: ", representative1_vote, "representative2: ", representative2_vote)
+                    # print("chairperson: ", chairperson_vote, "vice_chairperson: ", vice_chairperson_vote, "secretary: ", secretary_vote, "assistant_secretary: ", assistant_secretary_vote, "treasurer: ", treasurer_vote, "assistant_treasurer: ", assistant_treasurer_vote, "auditor: ",
+                        #   auditor_vote, "assistant_auditor: ", assistant_auditor_vote, "business_manager: ", business_manager_vote, "assistant_business_manager: ", assistant_business_manager_vote, "representative1: ", representative1_vote, "representative2: ", representative2_vote)
 
 
 
-        return render_template('vote.html', user = user, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, representative1=representative1, representative2=representative2, voted=voted)
+        return render_template('vote.html', user=usn, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, pio=pio, assistant_pio=assistant_pio, representative1=representative1, representative2=representative2, voted=voted)
     else:
         return redirect(url_for("login"))
 
@@ -447,11 +467,13 @@ def vote():
 @app.route("/results", methods=["POST", "GET"])
 def results():
     if "email" in session:
-        user = session["name"]
+        user = session["name"].split(" ")
+        usn = user[0]
+        
         votes = model.getVotes()
         positions = model.getPositions()
 
-        return render_template("results.html", votes=votes, positions=positions)
+        return render_template("results.html", votes=votes, positions=positions, user=usn)
     
     else:
         return redirect(url_for("login"))
@@ -466,4 +488,6 @@ def results1():
 
 @app.route("/about", methods=["POST", "GET"])
 def about():
-    return render_template("about.html")
+    user = session["name"].split(" ")
+    usn = user[0]
+    return render_template("about.html", user=usn)

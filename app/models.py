@@ -173,7 +173,10 @@ class Models:
                     # votes[position].append(i["position"])
                     votes[position].append(i["name"])
                     votes[position].append(i["party"])
-                    votes[position].append(str(int((votes_records.count_documents({i["position"] : i["name"]})/float(votes_records.count_documents({}))*100))) + "%")
+                    if votes_records.count_documents({}) != 0:
+                        votes[position].append(str(int((votes_records.count_documents({i["position"] : i["name"]})/float(votes_records.count_documents({}))*100))) + "%")
+                    else:
+                        pass
 
                     total.append(votes)
         

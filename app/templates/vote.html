@@ -263,6 +263,55 @@
                 style=" background: linear-gradient(118.32deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%);
                 backdrop-filter: blur(1000px);
                 border-radius: 16px;">
+                <!-- PIO -->
+                <div class="flex items-center flex-col w-auto h-auto">
+                    <h4 class="flex flex-col place-items-center justify-center items-center w-auto h-auto p-2 mb-1 pl-4 pr-4 text-white rounded sm:w-auto "
+                        style="background: #E2502B;">
+                        P.I.O.
+                    </h4>
+
+                    <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
+                        <span>
+                            {% for candidate in pio %}
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="pio" value="{{ candidate }}" required><br>
+                            {% endfor %}
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="filter backdrop-blur-3xl w-10/12 h-10/12 p-5 pl-4 pr-4 border order-first border-white shadow-xl"
+                style=" background: linear-gradient(118.32deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%);
+                backdrop-filter: blur(1000px);
+                border-radius: 16px;">
+                <!-- Assistant PIO -->
+                <div class="flex items-center flex-col w-auto h-auto">
+                    <h4 class="flex flex-col place-items-center justify-center items-center w-auto h-auto p-2 mb-1 pl-4 pr-4 text-white rounded sm:w-auto "
+                        style="background: #E2502B;">
+                        Assistant P.I.O
+                    </h4>
+
+                    <div class="w-full h-auto text-gray-700 text-base grid grid-cols-1 gap-2 p-3">
+                        <span>
+                            {% for candidate in assistant_pio %}
+                            <label for="{{candidate}}">{{ candidate }}</label>
+                            <input type="radio" id="{{candidate}}" name="assistant_pio" value="{{ candidate }}" required><br>
+                            {% endfor %}
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Content -->
+            <div class="filter backdrop-blur-3xl w-10/12 h-10/12 p-5 pl-4 pr-4 border order-first border-white shadow-xl"
+                style=" background: linear-gradient(118.32deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%);
+                backdrop-filter: blur(1000px);
+                border-radius: 16px;">
                 <!-- Representative 1 -->
                 <div class="flex items-center flex-col w-auto h-auto">
                     <h4 class="flex flex-col place-items-center justify-center items-center w-auto h-auto p-2 mb-1 pl-4 pr-4 text-white rounded sm:w-auto "
