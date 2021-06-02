@@ -4,8 +4,8 @@
 - [x] Sign-up, Login, Logout
 - [x] Voting
 - [x] Results
-- [ ] News and Updates - in progress, needs data from the results page
-- [ ] Voting timer - in progress
+- [ ] News and Updates - in progress, feature to add post from admin page
+- [ ] Voting timer - back-end only, no ui
 - [ ] Profile page - in progress
 - [ ] Change display picture - in progress
 
