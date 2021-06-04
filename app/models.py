@@ -160,9 +160,18 @@ class Models:
             for key, value in i.items():
                 if key == "name":
                     
-
-                    list_position = i["position"].split("_")
-                    position = " ".join(list_position).title()
+                    if i["position"] == "pio":
+                        position = "P.I.O."
+                    elif i["position"] == "assistant_pio":
+                        position = "Assistant P.I.O."
+                    elif i["position"] == "representative1":
+                        position = "Representative 1"
+                    elif i["position"] == "representative2":
+                        position = "Representative 2"
+    
+                    else:
+                        list_position = i["position"].split("_")
+                        position = " ".join(list_position).title()
 
                     # candidate_description = [i["name"], i["party"]]
                     # candidate_description.append(votes_records.count_documents({i["position"] : i["name"]})/float(votes_records.count_documents({}))*100)
@@ -180,7 +189,7 @@ class Models:
 
                     total.append(votes)
         
-        print(total)
+        # print(total)
             
                 
         return total
@@ -206,9 +215,28 @@ class Models:
                 pass
         
         for i in positions:
-            list_positions = i.split("_")
-            parsed_list = " ".join(list_positions).title()
-            positions_parsed.append(parsed_list)
+            if i == "pio":
+                pos1 = "P.I.O."
+                positions_parsed.append(pos1)
+            elif i == "assistant_pio":
+                pos = "Assistant P.I.O."
+                positions_parsed.append(pos)
+            elif i == "representative1":
+                pos1 = "Representative 1"
+                positions_parsed.append(pos1)
+            elif i == "representative2":
+                pos = "Representative 2"
+                positions_parsed.append(pos)
+            else:
+                list_positions = i.split("_")
+                parsed_list = " ".join(list_positions).title()
+                positions_parsed.append(parsed_list)
+
+
+            
+
+
+
 
         return positions_parsed
 

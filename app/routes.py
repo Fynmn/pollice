@@ -12,6 +12,7 @@ from flask import (
     jsonify,
     session,
     flash)
+import random
 import pymongo
 import bcrypt
 from pymongo import collection
@@ -19,6 +20,7 @@ from app import app
 from app.helpers import *
 from app.forms import *
 from app.models import *
+
 
 
 model = Models()  # instance of the Model Class
@@ -94,10 +96,10 @@ def create_account():
             session["section"] = section
             session["name"] = user
             # session["voted"] = False
-            user = session["name"].split(" ")
-            usn = user[0]
+            username = session["name"].split(" ")
+            usn = username[0]
 
-            return render_template('logged_in.html', email=new_email, usn=usn)
+            return render_template('logged_in.html', email=new_email, user=usn)
     return render_template('create_account.html')
 
 
@@ -109,6 +111,7 @@ def logged_in():
         user = session["name"].split(" ")
         usn = user[0]
         return render_template('logged_in.html', email=email, section=section, user=usn)
+        
     else:
         return redirect(url_for("login"))
 
@@ -139,7 +142,7 @@ def login():
                 session["section"] = section_val
                 session["name"] = user_val
                 # session["voted"] = False
-                print(voted)
+                # print(voted)
 
                 return redirect(url_for('logged_in'))
             else:
@@ -211,15 +214,6 @@ def admin_panel():
         return redirect(url_for("admin_login"))
 
 
-# @app.route("/admin_logout", methods=["POST", "GET"])
-# def admin_logout():
-#     if "admin_username" in session:
-#         session.pop("admin_username", None)
-#         return render_template("admin_loggedout.html")
-#     else:
-#         return render_template('admin_login.html')
-
-
 @app.route("/admin_logout", methods=["POST", "GET"])
 def admin_logout():
     if "admin_username" in session:
@@ -285,23 +279,43 @@ def viewCandidate():
 @app.route("/admin/add", methods=["POST", "GET"])
 def addCandidate():
     if "admin_username" in session:
+
         if request.method == "POST":
-            candidate_name = request.form.get("candidate_name")
-            candidate_position = request.form.get("candidate_position")
-            candidate_party = request.form.get("candidate_party")
-            candidate_course = request.form.get("candidate_course")
-            candidate_year = request.form.get("candidate_year")
+            if request.form.get("submit_btn") == "Add Candidate":
+                candidate_name = request.form.get("candidate_name")
+                candidate_position = request.form.get("candidate_position")
+                candidate_party = request.form.get("candidate_party")
+                candidate_course = request.form.get("candidate_course")
+                candidate_year = request.form.get("candidate_year")
 
-            last_record = candidates_records.find().sort([('_id', -1)]).limit(1)
-            id_num = int(last_record[0]['id']) + 1
-            id = "00"+str(id_num)
+                last_record = candidates_records.find().sort([('_id', -1)]).limit(1)
+                id_num = int(last_record[0]['id']) + 1
+                # id = "00"+str(id_num)
+                id = str(id_num)
 
-            admin_add = {"id": id, 'party': candidate_party, 'course': candidate_course,
-                'year': candidate_year, "position": candidate_position, "name": candidate_name}
-            candidates_records.insert_one(admin_add)
+                admin_add = {"id": id, 'party': candidate_party, 'course': candidate_course,
+                    'year': candidate_year, "position": candidate_position, "name": candidate_name}
+                candidates_records.insert_one(admin_add)
 
+                print(candidate_name, candidate_position, candidate_party, candidate_course, candidate_year)
+
+                return render_template("admin_addCan.html")
+
+            # triggeres when post is clicked
+            elif request.form.get("submit_post_btn") == "Submit Post":
+                post_details = request.form.get("new_post") # gets the text from the textarea named new_post
+                post_id = ''
+                post_name = 'post + (number)' + 'or' + 'make a formal one'
+                # make code that adds these details to a new document in mongodb, post_id(make one), post_name(make one or require one) and the text for the post itself
+                session['post'] = post_details
+                print(session['post'])
+
+
+                return redirect(url_for("logged_in"))
+        
         return render_template("admin_addCan.html")
-    
+
+        
     else:
         return redirect(url_for("admin_login"))
 
@@ -363,6 +377,10 @@ def vote():
         user = session["name"]
         the_user = session["name"].split(" ")
         usn = the_user[0]
+        votes = model.getVotes()
+        positions = model.getPositions()
+        # print(votes)
+        print(positions)
 
         if request.method == "GET":
             if model.getVoted(str(user)):
@@ -424,20 +442,26 @@ def vote():
 
             if request.method == "POST":
                 if "submit_btn" in request.form:
-                    chairperson_vote = request.form.get("chairperson")
-                    vice_chairperson_vote = request.form.get("vice_chairperson")
-                    secretary_vote = request.form.get("secretary")
-                    assistant_secretary_vote = request.form.get("assistant_secretary")
-                    treasurer_vote = request.form.get("treasurer")
-                    assistant_treasurer_vote = request.form.get("assistant_treasurer")
-                    auditor_vote = request.form.get("auditor")
-                    assistant_auditor_vote = request.form.get("assistant_auditor")
-                    business_manager_vote = request.form.get("business_manager")
-                    assistant_business_manager_vote = request.form.get("assistant_business_manager")
-                    pio_vote = request.form.get("pio")
-                    assistant_pio_vote = request.form.get("assistant_pio")
-                    representative1_vote = request.form.get("representative1")
-                    representative2_vote = request.form.get("representative2")
+
+                    # v = request.form["position"]
+                    # print(v)
+                    chairperson_vote = request.form.get("Chairperson")
+                    vice_chairperson_vote = request.form.get("Vice Chairperson")
+                    secretary_vote = request.form.get("Secretary")
+                    assistant_secretary_vote = request.form.get("Assistant Secretary")
+                    treasurer_vote = request.form.get("Treasurer")
+                    assistant_treasurer_vote = request.form.get("Assistant Treasurer")
+                    auditor_vote = request.form.get("Auditor")
+                    assistant_auditor_vote = request.form.get("Assistant Auditor")
+                    business_manager_vote = request.form.get("Business Manager")
+                    assistant_business_manager_vote = request.form.get("Assistant Business Manager")
+                    pio_vote = request.form.get("P.I.O.")
+                    assistant_pio_vote = request.form.get("Assistant P.I.O.")
+                    representative1_vote = request.form.get("Representative 1")
+                    representative2_vote = request.form.get("Representative 2")
+
+                    print("chairperson: ", chairperson_vote, "vice_chairperson: ", vice_chairperson_vote, "secretary: ", secretary_vote, "assistant_secretary: ", assistant_secretary_vote, "treasurer: ", treasurer_vote, "assistant_treasurer: ", assistant_treasurer_vote, "auditor: ",
+                          auditor_vote, "assistant_auditor: ", assistant_auditor_vote, "business_manager: ", business_manager_vote, "assistant_business_manager: ", assistant_business_manager_vote, "pio_vote: ", pio_vote, "assistant_pio_vote", assistant_pio_vote,  "representative1: ", representative1_vote, "representative2: ", representative2_vote)
 
                     candidate_id = model.getIDbyName(str(user))
                     updateRecordQuery = {"_id": candidate_id}
@@ -451,15 +475,18 @@ def vote():
 
                     if model.getVoted(str(user)):
                         voted = True
+                        print("true")
                     else:
                         voted = False
+                        print('false')
                     
-                    # print("chairperson: ", chairperson_vote, "vice_chairperson: ", vice_chairperson_vote, "secretary: ", secretary_vote, "assistant_secretary: ", assistant_secretary_vote, "treasurer: ", treasurer_vote, "assistant_treasurer: ", assistant_treasurer_vote, "auditor: ",
-                        #   auditor_vote, "assistant_auditor: ", assistant_auditor_vote, "business_manager: ", business_manager_vote, "assistant_business_manager: ", assistant_business_manager_vote, "representative1: ", representative1_vote, "representative2: ", representative2_vote)
+                    return render_template('vote.html', votes=votes, positions=positions, user=usn, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, pio=pio, assistant_pio=assistant_pio, representative1=representative1, representative2=representative2, voted=voted)
+                    
+                    
 
 
 
-        return render_template('vote.html', user=usn, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, pio=pio, assistant_pio=assistant_pio, representative1=representative1, representative2=representative2, voted=voted)
+        return render_template('vote.html', votes=votes, positions=positions, user=usn, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, pio=pio, assistant_pio=assistant_pio, representative1=representative1, representative2=representative2, voted=voted)
     else:
         return redirect(url_for("login"))
 

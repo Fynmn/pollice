@@ -755,7 +755,7 @@ module.exports = {
     appearance: ['responsive'],
     backgroundAttachment: ['responsive'],
     backgroundClip: ['responsive'],
-    backgroundColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
+    backgroundColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'visited'],
     backgroundImage: ['responsive'],
     backgroundOpacity: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
     backgroundPosition: ['responsive'],
@@ -846,7 +846,7 @@ module.exports = {
     strokeWidth: ['responsive'],
     tableLayout: ['responsive'],
     textAlign: ['responsive'],
-    textColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus'],
+    textColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'visited'],
     textDecoration: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
     textOpacity: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
     textOverflow: ['responsive'],
@@ -865,6 +865,10 @@ module.exports = {
     width: ['responsive'],
     wordBreak: ['responsive'],
     zIndex: ['responsive', 'focus-within', 'focus'],
+    extend: {
+      backgroundColor: ['hover', 'visited'],
+      textColor: ['hover', 'visited'],
+    },
   },
   plugins: [],
 }
