@@ -2,8 +2,10 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: {
+    mode: "jit",
     enabled: ((process.env.NODE_ENV === 'production') ? true : false),
     mode: 'layers',
+    layers: ['base','components', 'utilities'],
     content: ['./app/templates/**/*.html']
   },
   presets: [],

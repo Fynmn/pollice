@@ -183,7 +183,9 @@ class Models:
                     votes[position].append(i["name"])
                     votes[position].append(i["party"])
                     if votes_records.count_documents({}) != 0:
-                        votes[position].append(str(int((votes_records.count_documents({i["position"] : i["name"]})/float(votes_records.count_documents({}))*100))) + "%")
+                        # votes[position].append(str(round(float((votes_records.count_documents({i["position"] : i["name"]})/float(votes_records.count_documents({}))*100)),1)) + "%")
+
+                        votes[position].append(str(votes_records.count_documents({i["position"] : i["name"]})) + " votes")
                     else:
                         pass
 
@@ -232,13 +234,29 @@ class Models:
                 parsed_list = " ".join(list_positions).title()
                 positions_parsed.append(parsed_list)
 
-
-            
-
-
-
-
         return positions_parsed
+
+    
+    def getPosts(self):
+        client = pymongo.MongoClient('localhost', 27017)
+        db = client.get_database('election-system-test')
+        posts_records = db.posts
+
+        records = posts_records.find()
+
+        posts_list = [] # [[p1],[p2]]
+
+        for i in records:
+            post = {k: i[k] for k in i.keys() - {'_id'}}
+            posts_list.append(post)
+
+
+        sorted_list = sorted(posts_list, key = lambda i: i['post_id'])
+        print(sorted_list)
+
+        return sorted_list
+
+
 
 
     

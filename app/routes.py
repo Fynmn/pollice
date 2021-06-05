@@ -29,11 +29,13 @@ model = Models()  # instance of the Model Class
 client = pymongo.MongoClient('localhost', 27017)
 db = client.get_database('election-system-test')
 user_records = db.users
-admin_records = db.admin
+admin_records = db.admins
 candidates_records = db.candidates
-candidates_records_copy = db.candidates_copy
+posts_records = db.posts
+# candidates_records_copy = db.candidates_copy
 user_records = db.users
 vote_records = db.votes
+
 
 user_created = False
 
@@ -99,7 +101,7 @@ def create_account():
             username = session["name"].split(" ")
             usn = username[0]
 
-            return render_template('logged_in.html', email=new_email, user=usn)
+            return render_template('userHome.html', email=new_email, user=usn)
     return render_template('create_account.html')
 
 
@@ -110,7 +112,9 @@ def logged_in():
         section = session["section"]
         user = session["name"].split(" ")
         usn = user[0]
-        return render_template('logged_in.html', email=email, section=section, user=usn)
+        posts = model.getPosts()
+        # print(posts)
+        return render_template('userHome.html', posts=posts, email=email, section=section, user=usn)
         
     else:
         return redirect(url_for("login"))
@@ -229,7 +233,7 @@ def viewCandidate():
     if "admin_username" in session:
         from bson.json_util import dumps, loads
         result = list(model.pullListOfCandidates())
-        print(result)
+        # print(result)
 
         party1 = []
         party2 = []
@@ -250,27 +254,28 @@ def viewCandidate():
         party2_list = []
         party3_list = []
 
+
         for i in range(len(party1)):
-            party1Item = [party1[i]["id"], party1[i]["name"],
-                "as", party1[i]["position"].title()]
-            party1_list.append(" ".join(party1Item))
+            party1Item = [[party1[i]["id"]], [party1[i]["name"].upper()],
+            [" ".join(party1[i]["position"].split("_")).upper()]]
+            party1_list.append((party1Item))
 
         for i in range(len(party2)):
-            party2Item = [party2[i]["id"], party2[i]["name"],
-                "as", party2[i]["position"].title()]
-            party2_list.append(" ".join(party2Item))
+            party2Item = [[party2[i]["id"]], [party2[i]["name"].upper()],
+                [" ".join(party2[i]["position"].split("_")).upper()]]
+            party2_list.append(party2Item)
 
         for i in range(len(party3)):
-            party3Item = [party3[i]["id"], party3[i]["name"],
-                "as", party3[i]["position"].title()]
-            party3_list.append(" ".join(party3Item))
+            party3Item = [[party3[i]["id"]], [party3[i]["name"].upper()],
+                [" ".join(party3[i]["position"].split("_")).upper()]]
+            party3_list.append(party3Item)
 
-        print(party1_list)
-        print(party2_list)
-        print(party3_list)
+        # print(party1_list)
+        # print(party2_list)
+        # print(party3_list)
         # return render_template("admin_viewCan.html")
 
-        return render_template("admin_viewCan.html", party1=party1_list, party2=party2_list, party3=party3_list)
+        return render_template("adminView.html", party1=party1_list, party2=party2_list, party3=party3_list)
     
     else:
         return redirect(url_for("admin_login"))
@@ -279,6 +284,7 @@ def viewCandidate():
 @app.route("/admin/add", methods=["POST", "GET"])
 def addCandidate():
     if "admin_username" in session:
+        # model.getPosts()
 
         if request.method == "POST":
             if request.form.get("submit_btn") == "Add Candidate":
@@ -287,6 +293,16 @@ def addCandidate():
                 candidate_party = request.form.get("candidate_party")
                 candidate_course = request.form.get("candidate_course")
                 candidate_year = request.form.get("candidate_year")
+
+                session['candidate_name'] = candidate_name
+                session['candidate_position'] = candidate_position
+                session['candidate_party'] = candidate_party
+
+                can_name = session['candidate_name']
+                can_pos = session['candidate_position'].split("_")
+                can_party = session['candidate_party'].title()
+                can_position = " ".join(can_pos).title()
+
 
                 last_record = candidates_records.find().sort([('_id', -1)]).limit(1)
                 id_num = int(last_record[0]['id']) + 1
@@ -297,23 +313,25 @@ def addCandidate():
                     'year': candidate_year, "position": candidate_position, "name": candidate_name}
                 candidates_records.insert_one(admin_add)
 
-                print(candidate_name, candidate_position, candidate_party, candidate_course, candidate_year)
+                # print(candidate_name, candidate_position, candidate_party, candidate_course, candidate_year)
 
-                return render_template("admin_addCan.html")
+                return render_template("adminAdd.html", can_name=can_name, can_party=can_party, can_position=can_position)
 
             # triggeres when post is clicked
             elif request.form.get("submit_post_btn") == "Submit Post":
+                last_record = posts_records.find().sort([('_id', -1)]).limit(1)
+                id_num = int(last_record[0]['post_id']) + 1
+                post_id = "000"+str(id_num)
                 post_details = request.form.get("new_post") # gets the text from the textarea named new_post
-                post_id = ''
-                post_name = 'post + (number)' + 'or' + 'make a formal one'
+                post_name = request.form.get("post_name")
                 # make code that adds these details to a new document in mongodb, post_id(make one), post_name(make one or require one) and the text for the post itself
-                session['post'] = post_details
-                print(session['post'])
+                post_add = {"post_id": post_id, "post_name": post_name, "post_details": post_details}
+                posts_records.insert_one(post_add)
 
 
                 return redirect(url_for("logged_in"))
         
-        return render_template("admin_addCan.html")
+        return render_template("adminAdd.html")
 
         
     else:
@@ -336,7 +354,7 @@ def updateCandidate():
                 'year': candidate_year, "position": candidate_position, "name": candidate_name}}
             candidates_records.update_one(updateRecordQuery, newvalues)
 
-        return render_template("admin_updateCan.html")
+        return render_template("adminUpdate.html")
     
     else:
         return redirect(url_for("admin_login"))
@@ -348,10 +366,15 @@ def deleteCandidate():
         if request.method == "POST":
             candidate_id = request.form.get("candidate_id")
 
+            session['delete_can'] = candidate_id
+
+            delete_candidate = session['delete_can']
+
             deleteRecordQuery = {"id": candidate_id}
             candidates_records.find_one_and_delete(deleteRecordQuery)
 
-        return render_template("admin_deleteCan.html")
+            return render_template("adminDelete.html", delete_candidate=delete_candidate)
+        return render_template("adminDelete.html")
     
     else:
         return redirect(url_for("admin_login"))
@@ -380,7 +403,7 @@ def vote():
         votes = model.getVotes()
         positions = model.getPositions()
         # print(votes)
-        print(positions)
+        # print(positions)
 
         if request.method == "GET":
             if model.getVoted(str(user)):
@@ -441,7 +464,7 @@ def vote():
 
 
             if request.method == "POST":
-                if "submit_btn" in request.form:
+                if "okay_btn" in request.form:
 
                     # v = request.form["position"]
                     # print(v)
@@ -480,13 +503,10 @@ def vote():
                         voted = False
                         print('false')
                     
-                    return render_template('vote.html', votes=votes, positions=positions, user=usn, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, pio=pio, assistant_pio=assistant_pio, representative1=representative1, representative2=representative2, voted=voted)
+                    return redirect(url_for('results'))
                     
-                    
 
-
-
-        return render_template('vote.html', votes=votes, positions=positions, user=usn, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, pio=pio, assistant_pio=assistant_pio, representative1=representative1, representative2=representative2, voted=voted)
+        return render_template('userVote.html', votes=votes, positions=positions, user=usn, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, pio=pio, assistant_pio=assistant_pio, representative1=representative1, representative2=representative2, voted=voted)
     else:
         return redirect(url_for("login"))
 
@@ -500,7 +520,7 @@ def results():
         votes = model.getVotes()
         positions = model.getPositions()
 
-        return render_template("results.html", votes=votes, positions=positions, user=usn)
+        return render_template("userResults.html", votes=votes, positions=positions, user=usn)
     
     else:
         return redirect(url_for("login"))
@@ -517,4 +537,4 @@ def results1():
 def about():
     user = session["name"].split(" ")
     usn = user[0]
-    return render_template("about.html", user=usn)
+    return render_template("userAbout.html", user=usn)
