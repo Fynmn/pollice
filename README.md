@@ -4,7 +4,7 @@
 - [x] Sign-up, Login, Logout
 - [x] Voting
 - [x] Results
-- [ ] News and Updates - in progress, feature to add post from admin page
+- [x] News and Updates - feature to add post from the admin panel
 - [ ] Voting timer - back-end only, no ui
 - [ ] Profile page - in progress
 - [ ] Change display picture - in progress
