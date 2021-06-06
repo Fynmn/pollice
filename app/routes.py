@@ -26,7 +26,10 @@ from app.models import *
 model = Models()  # instance of the Model Class
 
 
-client = pymongo.MongoClient('localhost', 27017)
+
+# client = pymongo.MongoClient('localhost', 27017)
+client = pymongo.MongoClient("mongodb://fynmn:October05@cluster0-shard-00-00.2fb7q.mongodb.net:27017,cluster0-shard-00-01.2fb7q.mongodb.net:27017,cluster0-shard-00-02.2fb7q.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-192j1z-shard-0&authSource=admin&retryWrites=true&w=majority")
+
 db = client.get_database('election-system-test')
 user_records = db.users
 admin_records = db.admins
@@ -412,101 +415,101 @@ def vote():
             else:
                 voted = False
         
-        listOfCandidates = model.pullCandidates()
+        # listOfCandidates = model.pullCandidates()
         # print(listOfCandidates)
-        chairperson = []
-        vice_chairperson = []
-        secretary = []
-        assistant_secretary = []
-        treasurer = []
-        assistant_treasurer = []
-        auditor = []
-        assistant_auditor = []
-        business_manager = []
-        assistant_business_manager = []
-        pio = []
-        assistant_pio = []
-        representative1 = []
-        representative2 = []
+        # chairperson = []
+        # vice_chairperson = []
+        # secretary = []
+        # assistant_secretary = []
+        # treasurer = []
+        # assistant_treasurer = []
+        # auditor = []
+        # assistant_auditor = []
+        # business_manager = []
+        # assistant_business_manager = []
+        # pio = []
+        # assistant_pio = []
+        # representative1 = []
+        # representative2 = []
 
-        x = True
-        while x:
-            for num, i in enumerate(listOfCandidates):
-                if i[1] == "chairperson":
-                    chairperson.append(i[0])
-                elif i[1] == "vice_chairperson":
-                    vice_chairperson.append(i[0])
-                elif i[1] == "secretary":
-                    secretary.append(i[0])
-                elif i[1] == "assistant_secretary":
-                    assistant_secretary.append(i[0])
-                elif i[1] == "treasurer":
-                    treasurer.append(i[0])
-                elif i[1] == "assistant_treasurer":
-                    assistant_treasurer.append(i[0])
-                elif i[1] == "auditor":
-                    auditor.append(i[0])
-                elif i[1] == "assistant_auditor":
-                    assistant_auditor.append(i[0])
-                elif i[1] == "business_manager":
-                    business_manager.append(i[0])
-                elif i[1] == "assistant_business_manager":
-                    assistant_business_manager.append(i[0])
-                elif i[1] == "pio":
-                    pio.append(i[0])
-                elif i[1] == "assistant_pio":
-                    assistant_pio.append(i[0])
-                elif i[1] == "representative1":
-                    representative1.append(i[0])
-                elif i[1] == "representative2":
-                    representative2.append(i[0])
-            x = False
+        # x = True
+        # while x:
+        #     for num, i in enumerate(listOfCandidates):
+        #         if i[1] == "chairperson":
+        #             chairperson.append(i[0])
+        #         elif i[1] == "vice_chairperson":
+        #             vice_chairperson.append(i[0])
+        #         elif i[1] == "secretary":
+        #             secretary.append(i[0])
+        #         elif i[1] == "assistant_secretary":
+        #             assistant_secretary.append(i[0])
+        #         elif i[1] == "treasurer":
+        #             treasurer.append(i[0])
+        #         elif i[1] == "assistant_treasurer":
+        #             assistant_treasurer.append(i[0])
+        #         elif i[1] == "auditor":
+        #             auditor.append(i[0])
+        #         elif i[1] == "assistant_auditor":
+        #             assistant_auditor.append(i[0])
+        #         elif i[1] == "business_manager":
+        #             business_manager.append(i[0])
+        #         elif i[1] == "assistant_business_manager":
+        #             assistant_business_manager.append(i[0])
+        #         elif i[1] == "pio":
+        #             pio.append(i[0])
+        #         elif i[1] == "assistant_pio":
+        #             assistant_pio.append(i[0])
+        #         elif i[1] == "representative1":
+        #             representative1.append(i[0])
+        #         elif i[1] == "representative2":
+        #             representative2.append(i[0])
+        #     x = False
 
 
-            if request.method == "POST":
-                if "okay_btn" in request.form:
+        if request.method == "POST":
+            if "okay_btn" in request.form:
 
-                    # v = request.form["position"]
-                    # print(v)
-                    chairperson_vote = request.form.get("Chairperson")
-                    vice_chairperson_vote = request.form.get("Vice Chairperson")
-                    secretary_vote = request.form.get("Secretary")
-                    assistant_secretary_vote = request.form.get("Assistant Secretary")
-                    treasurer_vote = request.form.get("Treasurer")
-                    assistant_treasurer_vote = request.form.get("Assistant Treasurer")
-                    auditor_vote = request.form.get("Auditor")
-                    assistant_auditor_vote = request.form.get("Assistant Auditor")
-                    business_manager_vote = request.form.get("Business Manager")
-                    assistant_business_manager_vote = request.form.get("Assistant Business Manager")
-                    pio_vote = request.form.get("P.I.O.")
-                    assistant_pio_vote = request.form.get("Assistant P.I.O.")
-                    representative1_vote = request.form.get("Representative 1")
-                    representative2_vote = request.form.get("Representative 2")
+                # v = request.form["position"]
+                # print(v)
+                chairperson_vote = request.form.get("Chairperson")
+                vice_chairperson_vote = request.form.get("Vice Chairperson")
+                secretary_vote = request.form.get("Secretary")
+                assistant_secretary_vote = request.form.get("Assistant Secretary")
+                treasurer_vote = request.form.get("Treasurer")
+                assistant_treasurer_vote = request.form.get("Assistant Treasurer")
+                auditor_vote = request.form.get("Auditor")
+                assistant_auditor_vote = request.form.get("Assistant Auditor")
+                business_manager_vote = request.form.get("Business Manager")
+                assistant_business_manager_vote = request.form.get("Assistant Business Manager")
+                pio_vote = request.form.get("P.I.O.")
+                assistant_pio_vote = request.form.get("Assistant P.I.O.")
+                representative1_vote = request.form.get("Representative 1")
+                representative2_vote = request.form.get("Representative 2")
 
-                    print("chairperson: ", chairperson_vote, "vice_chairperson: ", vice_chairperson_vote, "secretary: ", secretary_vote, "assistant_secretary: ", assistant_secretary_vote, "treasurer: ", treasurer_vote, "assistant_treasurer: ", assistant_treasurer_vote, "auditor: ",
-                          auditor_vote, "assistant_auditor: ", assistant_auditor_vote, "business_manager: ", business_manager_vote, "assistant_business_manager: ", assistant_business_manager_vote, "pio_vote: ", pio_vote, "assistant_pio_vote", assistant_pio_vote,  "representative1: ", representative1_vote, "representative2: ", representative2_vote)
+                # print("chairperson: ", chairperson_vote, "vice_chairperson: ", vice_chairperson_vote, "secretary: ", secretary_vote, "assistant_secretary: ", assistant_secretary_vote, "treasurer: ", treasurer_vote, "assistant_treasurer: ", assistant_treasurer_vote, "auditor: ",
+                        #   auditor_vote, "assistant_auditor: ", assistant_auditor_vote, "business_manager: ", business_manager_vote, "assistant_business_manager: ", assistant_business_manager_vote, "pio_vote: ", pio_vote, "assistant_pio_vote", assistant_pio_vote,  "representative1: ", representative1_vote, "representative2: ", representative2_vote)
 
-                    candidate_id = model.getIDbyName(str(user))
-                    updateRecordQuery = {"_id": candidate_id}
-                    newvalues = {"$set": {"voted": True}}
-                    user_records.update_one(updateRecordQuery, newvalues)
+                candidate_id = model.getIDbyName(str(user))
+                updateRecordQuery = {"_id": candidate_id}
+                newvalues = {"$set": {"voted": True}}
+                user_records.update_one(updateRecordQuery, newvalues)
 
-                    votes_add = {"name": str(user), "chairperson": chairperson_vote, "vice_chairperson" : vice_chairperson_vote, "secretary" : secretary_vote, "assistant_secretary" : assistant_secretary_vote, "treasurer" : treasurer_vote, "assistant_treasurer" : assistant_treasurer_vote, "auditor":
+                votes_add = {"name": str(user), "chairperson": chairperson_vote, "vice_chairperson" : vice_chairperson_vote, "secretary" : secretary_vote, "assistant_secretary" : assistant_secretary_vote, "treasurer" : treasurer_vote, "assistant_treasurer" : assistant_treasurer_vote, "auditor":
                           auditor_vote, "assistant_auditor" : assistant_auditor_vote, "business_manager" : business_manager_vote, "assistant_business_manager" : assistant_business_manager_vote, "pio" : pio_vote, "assistant_pio" : assistant_pio_vote, "representative1" : representative1_vote, "representative2" :representative2_vote}
                     
-                    vote_records.insert_one(votes_add)
+                vote_records.insert_one(votes_add)
 
-                    if model.getVoted(str(user)):
-                        voted = True
-                        print("true")
-                    else:
-                        voted = False
-                        print('false')
+                if model.getVoted(str(user)):
+                    voted = True
+                    # print("true")
+                else:
+                    voted = False
+                    # print('false')
                     
-                    return redirect(url_for('results'))
+                return redirect(url_for('results'))
                     
 
-        return render_template('userVote.html', votes=votes, positions=positions, user=usn, chairperson=chairperson, vice_chairperson=vice_chairperson, secretary=secretary, assistant_secretary=assistant_secretary, treasurer=treasurer, assistant_treasurer=assistant_treasurer, auditor=auditor, assistant_auditor=assistant_auditor, business_manager=business_manager, assistant_business_manager=assistant_business_manager, pio=pio, assistant_pio=assistant_pio, representative1=representative1, representative2=representative2, voted=voted)
+        return render_template('userVote.html', votes=votes, positions=positions, user=usn, voted=voted)
     else:
         return redirect(url_for("login"))
 
