@@ -14,7 +14,8 @@ from flask import (
 class Models:
     def __init__(self) -> None:
         # self.client = pymongo.MongoClient('localhost', 27017)
-        self.client = pymongo.MongoClient("mongodb://fynmn:October05@cluster0-shard-00-00.2fb7q.mongodb.net:27017,cluster0-shard-00-01.2fb7q.mongodb.net:27017,cluster0-shard-00-02.2fb7q.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-192j1z-shard-0&authSource=admin&retryWrites=true&w=majority")
+        # self.client = pymongo.MongoClient("mongodb://fynmn:October05@cluster0-shard-00-00.2fb7q.mongodb.net:27017,cluster0-shard-00-01.2fb7q.mongodb.net:27017,cluster0-shard-00-02.2fb7q.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-192j1z-shard-0&authSource=admin&retryWrites=true&w=majority")
+        self.client = pymongo.MongoClient('localhost', 27017)
         self.db = self.client.get_database('election-system-test')
         self.candidates_records = self.db.candidates
         self.users_records = self.db.users
@@ -195,10 +196,11 @@ class Models:
                     if self.votes_records.count_documents({}) != 0:
                         # votes[position].append(str(round(float((votes_records.count_documents({i["position"] : i["name"]})/float(votes_records.count_documents({}))*100)),1)) + "%")
 
-                        votes[position].append(str(self.votes_records.count_documents({i["position"] : i["name"]})) + " votes")
+                        votes[position].append(int(self.votes_records.count_documents({i["position"] : i["name"]})))
+                        
                     else:
                         pass
-
+                    # print(type(votes[position][2]))
                     total.append(votes)
         
         # print(total)

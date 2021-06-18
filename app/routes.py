@@ -27,8 +27,8 @@ model = Models()  # instance of the Model Class
 
 
 
-# client = pymongo.MongoClient('localhost', 27017)
-client = pymongo.MongoClient("mongodb://fynmn:October05@cluster0-shard-00-00.2fb7q.mongodb.net:27017,cluster0-shard-00-01.2fb7q.mongodb.net:27017,cluster0-shard-00-02.2fb7q.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-192j1z-shard-0&authSource=admin&retryWrites=true&w=majority")
+client = pymongo.MongoClient('localhost', 27017)
+# client = pymongo.MongoClient("mongodb://fynmn:October05@cluster0-shard-00-00.2fb7q.mongodb.net:27017,cluster0-shard-00-01.2fb7q.mongodb.net:27017,cluster0-shard-00-02.2fb7q.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-192j1z-shard-0&authSource=admin&retryWrites=true&w=majority")
 
 db = client.get_database('election-system-test')
 user_records = db.users
@@ -331,8 +331,8 @@ def addCandidate():
                 post_add = {"post_id": post_id, "post_name": post_name, "post_details": post_details}
                 posts_records.insert_one(post_add)
 
-
-                return redirect(url_for("logged_in"))
+                return render_template("adminAdd.html")
+                # return redirect(url_for("admin/add"))
         
         return render_template("adminAdd.html")
 
@@ -529,11 +529,6 @@ def results():
         return redirect(url_for("login"))
 
 
-@app.route("/results1", methods=["POST", "GET"])
-def results1():
-    votes = model.getVotes()
-
-    return render_template("results copy.html", votes=votes)
 
 
 @app.route("/about", methods=["POST", "GET"])
