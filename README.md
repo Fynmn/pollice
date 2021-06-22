@@ -43,7 +43,7 @@
 5. Import our .json files from Pollice-Temporary-Database folder to our newly created database. Open your command line and we can do this by typing the command, mongoimport --db dbNameHere --collection collectionNameHere --file fileInputNameher.json usage example mongoimport --db election-system-test --collection admins --file admins.json. Do this for every .json file that we have.
 6. And you're good to go!
 
-STEP 2: How to run (make sure you imported the necessary .json files in our database before proceeding)
+## STEP 2: How to run (make sure you imported the necessary .json files in our database before proceeding)
 
 1. Create a virtual environment in Python.
 2. Activate python virtual environment with this command: source venvFolderName/bin/activate for linux users, kindly see documentation for windows users. Make sure you're on the right directory, specifically where your project folder is.
