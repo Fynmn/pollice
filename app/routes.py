@@ -352,7 +352,10 @@ def addCandidate():
             elif request.form.get("submit_post_btn") == "Submit Post":
                 last_record = posts_records.find().sort([('_id', -1)]).limit(1)
                 id_num = int(last_record[0]['post_id']) + 1
-                post_id = "000"+str(id_num)
+                if id_num < 10:
+                    post_id = "000"+str(id_num)
+                else:
+                    post_id = "00"+str(id_num)
                 post_details = request.form.get("new_post") # gets the text from the textarea named new_post
                 post_name = request.form.get("post_name")
                 # make code that adds these details to a new document in mongodb, post_id(make one), post_name(make one or require one) and the text for the post itself
