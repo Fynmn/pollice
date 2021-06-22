@@ -3,6 +3,105 @@
 {% block title %}Admin — Add Candidates{% endblock %}
 
 {% block content %}
+
+<style>
+    /* The switch - the box around the slider */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color:rgba(79, 70, 229, 0.2);
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked+.slider {
+        background-color: rgba(79, 70, 229);
+    }
+
+    input:focus+.slider {
+        box-shadow: 0 0 1px rgba(79, 70, 229);
+    }
+
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>
+
+
+<!-- Toggle Switch -->
+<form method="POST" class="mx-auto mt-10">
+    <div class="flex">
+        <div class="m-2 mt-3 font-semibold" style="color: #FFA000;">VOTING STATUS:</div>
+
+        <div class="m-2 mr-4">
+            <label class="switch" for="switch">
+                <input type="checkbox" id="switch" name="toggle_switch" value="true" {{check}}>
+                <span class="slider pl-1 pt-1 text-white">ON</span>
+            </label>
+        </div>
+
+        <!-- <div class="custom-control custom-switch"> -->
+
+        <!-- <input type="checkbox" class="custom-control-input" id="switch" name="toggle_switch" value="true" {{check}}>
+            <label class="custom-control-label" for="switch">Enable Voting</label> -->
+        <!-- <button type="submit" class="btn btn-primary" name="toggle_submit" value="True">Submit
+        </button> -->
+
+
+        <div>
+            <input name="toggle_submit" value="Submit Status" type="submit"
+            class="text-center transition duration-500 ease-in-out hover:bg-indigo-500 transform hover:-translate-y-1 hover:scale-110 rounded-full h-12 w-36 text-white text-base bg-indigo-600 
+                                                md:text-lg md:h-12 md:w-40 md:transition md:duration-300 md:ease-in-out md:transform md:hover:-translate-y-1 md:hover:scale-110">
+        </div>
+
+        
+
+        <!-- </div> -->
+    </div>
+</form>
+
 <!-- Title -->
 <div class="md:px-14 lg:px-20">
     <div class="w-full p-6 flex-row">
@@ -197,7 +296,8 @@
                 <div class="flex flex-row justify-center">
                     <p class="px-6 text-sm font-light md:text-base">
                         <strong>{{can_name}}</strong> has been
-                        added as {{can_position}} to {{can_party}}</p>
+                        added as {{can_position}} to {{can_party}}
+                    </p>
                 </div>
             </div>
         </div>
@@ -246,8 +346,8 @@
                     <!--Button-->
                     <div class="flex justify-end py-2 md:py-5">
                         <input name="submit_post_btn" value="Submit Post" type="submit" placeholder="Submit Post"
-                            class="text-center modal-open transition duration-500 ease-in-out hover:bg-indigo-500 transform hover:-translate-y-1 hover:scale-110 rounded-full h-10 w-24 text-white text-base bg-indigo-600 
-                                            md:text-lg md:h-11 md:w-28 md:transition md:duration-300 md:ease-in-out md:transform md:hover:-translate-y-1 md:hover:scale-110">
+                            class="text-center modal-open transition duration-500 ease-in-out hover:bg-indigo-500 transform hover:-translate-y-1 hover:scale-110 rounded-full h-10 w-32 text-white text-base bg-indigo-600 
+                                            md:text-lg md:h-11 md:w-36 md:transition md:duration-300 md:ease-in-out md:transform md:hover:-translate-y-1 md:hover:scale-110">
                     </div>
                 </div>
             </div>
@@ -256,11 +356,12 @@
 </div>
 
 <script>
-    $(".btn").click(function() {
-    $('html,body').animate({
-        scrollTop: $("#added").offset().top},
-        'slow');
-});
+    $(".btn").click(function () {
+        $('html,body').animate({
+            scrollTop: $("#added").offset().top
+        },
+            'slow');
+    });
 
 </script>
 

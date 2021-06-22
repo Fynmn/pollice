@@ -38,7 +38,7 @@ posts_records = db.posts
 # candidates_records_copy = db.candidates_copy
 user_records = db.users
 vote_records = db.votes
-
+voting_status = db.voting_status
 
 user_created = False
 
@@ -289,8 +289,36 @@ def addCandidate():
     if "admin_username" in session:
         # model.getPosts()
 
+        #get specific voting enabled status in mongodb
+        #if true then check is = checked
+        #if false then check is empty
+
         if request.method == "POST":
-            if request.form.get("submit_btn") == "Add Candidate":
+            if request.form.get("toggle_submit") == "True":
+                voting_enabled = request.form.get("toggle_switch") 
+
+                if voting_enabled:
+                    check = 'checked'
+
+                    updateRecordQuery = {"voting_status_id": "0001"}
+                    newvalues = {"$set": {"voting_enabled": voting_enabled}}
+                    voting_status.update_one(updateRecordQuery, newvalues)
+
+                    print(voting_enabled)
+
+                
+                else:
+                    check = ''
+
+                    updateRecordQuery = {"voting_status_id": "0001"}
+                    newvalues = {"$set": {"voting_enabled": "false"}}
+                    voting_status.update_one(updateRecordQuery, newvalues)
+                
+                return render_template("adminAdd.html", check=check)
+                
+            
+
+            elif request.form.get("submit_btn") == "Add Candidate":
                 candidate_name = request.form.get("candidate_name")
                 candidate_position = request.form.get("candidate_position")
                 candidate_party = request.form.get("candidate_party")
