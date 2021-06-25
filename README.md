@@ -1,4 +1,6 @@
-# An Election System for WVSU CICT Technologies Used
+# An Election System for WVSU CICT 
+
+## Technologies Used
 
 ### Front-End
 - HTML
@@ -11,6 +13,8 @@
 - Flask Framework
 - MongoDB
 - JavaScript
+
+## Features
 
 ### Key Features
 - [x] Admin Login, Logout
