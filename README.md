@@ -24,11 +24,12 @@
 - [x] User Can Vote
 - [x] User Can See Results in Real-time
 - [x] User Can View News and Updates
-- [ ] Voting Toggle Button - back-end only, toggle on/off button - ui done, button not yet functioning
-- [ ] Edit Profile Page - in progress
-- [ ] Change Display Picture - in progress
+- [x] Voting Toggle Button - back-end only, toggle on/off button - ui done, button not yet functioning
+- [x] Edit Profile Page - in progress
+
 
 ### Future Updates
+- [ ] Change Display Picture
 - [ ] Let admin create/edit/delete parties and choose party color
 - [ ] Give ease of access to admin to see the results in real-time
 - [ ] Give access to admin to see the users that have voted along with their credentials, specifically their email and/or name for vote validity purposes
