@@ -24,8 +24,8 @@
 - [x] User Can Vote
 - [x] User Can See Results in Real-time
 - [x] User Can View News and Updates
-- [x] Voting Toggle Button - back-end only, toggle on/off button - ui done, button not yet functioning
-- [x] Edit Profile Page - in progress
+- [x] Voting Toggle Button - toggle on/off button for voting
+- [x] Edit Profile Page
 
 
 ### Future Updates
