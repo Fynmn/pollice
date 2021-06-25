@@ -4,14 +4,13 @@
 - HTML
 - CSS
 - Tailwind CSS Framework via npm package manager
-- Bootstrap Framework
-- Vanilla JavaScript
+- JavaScript
 
 ### Back-End
 - Python
 - Flask Framework
 - MongoDB
-- Vanilla JavaScript
+- JavaScript
 
 ### Key Features
 - [x] Admin Login, Logout
