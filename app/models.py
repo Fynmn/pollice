@@ -133,7 +133,7 @@ class Models:
         # db = self.client.get_database('election-system-test')
         # user_records = db.users
 
-        record = self.user_records.find_one({'name' : name})
+        record = self.users_records.find_one({'name' : name})
 
         return record.get('_id')
 

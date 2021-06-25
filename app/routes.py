@@ -49,8 +49,16 @@ voted = False
 def resource_not_found(e):
     return render_template('404.html'), 404
 
-
 @app.route("/", methods=['post', 'get'])
+def landing_page():
+    if request.method == "POST":
+        return redirect(url_for('create_account'))
+    
+    else:
+        return render_template('landingPage.html')
+
+
+@app.route("/create_account", methods=['post', 'get'])
 def create_account():
     global voted
     message = ''
@@ -73,26 +81,26 @@ def create_account():
         email_found = user_records.find_one({"email": email})
         if user_found:
             message = 'There already is a user by that name'
-            return render_template('create_account.html', message=message)
+            return render_template('userCreateAccount.html', message=message)
         if email_found:
             message = 'This email already exists in database'
-            return render_template('create_account.html', message=message)
+            return render_template('userCreateAccount.html', message=message)
         if password1 != password2:
             message = 'Passwords should match!'
-            return render_template('create_account.html', message=message)
+            return render_template('userCreateAccount.html', message=message)
         if len(password1) < 6:
             message = 'The length of password should be at least 6 characters long'
-            return render_template('create_account.html', message=message)
+            return render_template('userCreateAccount.html', message=message)
         if not any([char.isupper() for char in password1]):
             message = 'The password should have atleast one uppercase letter'
-            return render_template('create_account.html', message=message)
+            return render_template('userCreateAccount.html', message=message)
         if email_domain not in domain_allowed:
             message = 'Only valid wvsu email addresses are allowed to register.'
-            return render_template('create_account.html', message=message)
+            return render_template('userCreateAccount.html', message=message)
         else:
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
             user_input = {'name': user, 'email': email,
-                'password': hashed, 'course' : course, 'section': section, 'voted': False}
+                'password': hashed, 'course' : course, 'section': section, 'about': "Insert descrption here", 'birthday': "None", 'address': "None", 'voted': False}
             user_records.insert_one(user_input)
 
             user_data = user_records.find_one({"email": email})
@@ -105,7 +113,7 @@ def create_account():
             usn = username[0]
 
             return render_template('userHome.html', email=new_email, user=usn)
-    return render_template('create_account.html')
+    return render_template('userCreateAccount.html')
 
 
 @app.route('/logged_in')
@@ -126,7 +134,7 @@ def logged_in():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     global voted
-    message = 'Please login to your account'
+    message = ''
     if "email" in session:
         return redirect(url_for("logged_in"))
 
@@ -156,11 +164,11 @@ def login():
                 if "email" in session:
                     return redirect(url_for("logged_in"))
                 message = 'Wrong password'
-                return render_template('login.html', message=message)
+                return render_template('userLogin.html', message=message)
         else:
             message = 'Email not found'
-            return render_template('login.html', message=message)
-    return render_template('login.html', message=message)
+            return render_template('userLogin.html', message=message)
+    return render_template('userLogin.html', message=message)
 
 
 @app.route("/logout", methods=["POST", "GET"])
@@ -184,8 +192,9 @@ def admin():
 
 @app.route("/admin_login", methods=["POST", "GET"])
 def admin_login():
-    message = 'Please login to your account'
-        # return redirect(url_for("admin_panel"))
+    message = ''
+    
+        
 
     if request.method == "POST":
         username = request.form.get("admin_username")
@@ -193,6 +202,7 @@ def admin_login():
 
         username_found = admin_records.find_one({"username": username})
         session["admin_username"] = username
+        admin_username = session["admin_username"]
 
         if username_found:
             username_val = username_found['username']
@@ -206,11 +216,11 @@ def admin_login():
                     # if "admin_username" in session:
                     #     return redirect(url_for("admin_panel"))
                 message = 'Wrong password'
-                return render_template('admin_login.html', message=message)
+                return render_template('adminLogin.html', message=message, admin_username=admin_username)
         else:
             message = 'Username not found'
-            return render_template('admin_login.html', message=message)
-    return render_template('admin_login.html', message=message)
+            return render_template('adminLogin.html', message=message, admin_username=admin_username)
+    return render_template('adminLogin.html', message=message)
 
 
 @app.route("/admin_panel", methods=["POST", "GET"])
@@ -234,6 +244,7 @@ def admin_logout():
 @app.route("/admin/view", methods=["POST", "GET"])
 def viewCandidate():
     if "admin_username" in session:
+        admin_username = session["admin_username"].title()
         from bson.json_util import dumps, loads
         result = list(model.pullListOfCandidates())
         # print(result)
@@ -278,7 +289,7 @@ def viewCandidate():
         # print(party3_list)
         # return render_template("admin_viewCan.html")
 
-        return render_template("adminView.html", party1=party1_list, party2=party2_list, party3=party3_list)
+        return render_template("adminView.html", admin_username=admin_username, party1=party1_list, party2=party2_list, party3=party3_list)
     
     else:
         return redirect(url_for("admin_login"))
@@ -287,15 +298,24 @@ def viewCandidate():
 @app.route("/admin/add", methods=["POST", "GET"])
 def addCandidate():
     if "admin_username" in session:
+        admin_username = session["admin_username"].title()
         # model.getPosts()
 
         #get specific voting enabled status in mongodb
         #if true then check is = checked
         #if false then check is empty
+        status = voting_status.find_one({"voting_status_id": "0001"})
+
+        if status['voting_enabled'] == 'true':
+            check = 'checked'
+        
+        else:
+            check = ''
 
         if request.method == "POST":
-            if request.form.get("toggle_submit") == "True":
-                voting_enabled = request.form.get("toggle_switch") 
+            if request.form.get("toggle_submit") == "Submit Status":
+                voting_enabled = request.form.get("toggle_switch")
+                # print("vt: ", voting_enabled)
 
                 if voting_enabled:
                     check = 'checked'
@@ -314,7 +334,7 @@ def addCandidate():
                     newvalues = {"$set": {"voting_enabled": "false"}}
                     voting_status.update_one(updateRecordQuery, newvalues)
                 
-                return render_template("adminAdd.html", check=check)
+                return render_template("adminAdd.html", check=check, admin_username=admin_username)
                 
             
 
@@ -346,7 +366,7 @@ def addCandidate():
 
                 # print(candidate_name, candidate_position, candidate_party, candidate_course, candidate_year)
 
-                return render_template("adminAdd.html", can_name=can_name, can_party=can_party, can_position=can_position)
+                return render_template("adminAdd.html", admin_username=admin_username, can_name=can_name, can_party=can_party, can_position=can_position)
 
             # triggeres when post is clicked
             elif request.form.get("submit_post_btn") == "Submit Post":
@@ -362,10 +382,10 @@ def addCandidate():
                 post_add = {"post_id": post_id, "post_name": post_name, "post_details": post_details}
                 posts_records.insert_one(post_add)
 
-                return render_template("adminAdd.html")
+                return render_template("adminAdd.html", admin_username=admin_username, check=check)
                 # return redirect(url_for("admin/add"))
         
-        return render_template("adminAdd.html")
+        return render_template("adminAdd.html", admin_username=admin_username, check=check)
 
         
     else:
@@ -375,6 +395,7 @@ def addCandidate():
 @app.route("/admin/update", methods=["POST", "GET"])
 def updateCandidate():
     if "admin_username" in session:
+        admin_username = session['admin_username'].title()
         if request.method == "POST":
             candidate_id = request.form.get("candidate_id")
             candidate_name = request.form.get("candidate_name")
@@ -388,7 +409,7 @@ def updateCandidate():
                 'year': candidate_year, "position": candidate_position, "name": candidate_name}}
             candidates_records.update_one(updateRecordQuery, newvalues)
 
-        return render_template("adminUpdate.html")
+        return render_template("adminUpdate.html", admin_username=admin_username)
     
     else:
         return redirect(url_for("admin_login"))
@@ -397,6 +418,7 @@ def updateCandidate():
 @app.route("/admin/delete", methods=["POST", "GET"])
 def deleteCandidate():
     if "admin_username" in session:
+        admin_username = session['admin_username'].title()
         if request.method == "POST":
             candidate_id = request.form.get("candidate_id")
 
@@ -407,8 +429,8 @@ def deleteCandidate():
             deleteRecordQuery = {"id": candidate_id}
             candidates_records.find_one_and_delete(deleteRecordQuery)
 
-            return render_template("adminDelete.html", delete_candidate=delete_candidate)
-        return render_template("adminDelete.html")
+            return render_template("adminDelete.html", admin_username=admin_username, delete_candidate=delete_candidate)
+        return render_template("adminDelete.html",admin_username=admin_username)
     
     else:
         return redirect(url_for("admin_login"))
@@ -440,11 +462,21 @@ def vote():
         # print(positions)
 
         if request.method == "GET":
-            if model.getVoted(str(user)):
-                voted = True
+            status = voting_status.find_one({"voting_status_id": "0001"})
+            if status['voting_enabled'] == 'true':
+            
+                if model.getVoted(str(user)):
+                    voted = True
 
+                else:
+                    voted = False
+            
             else:
-                voted = False
+                voted = True
+            
+            
+
+        
         
         # listOfCandidates = model.pullCandidates()
         # print(listOfCandidates)
@@ -567,3 +599,73 @@ def about():
     user = session["name"].split(" ")
     usn = user[0]
     return render_template("userAbout.html", user=usn)
+
+
+
+@app.route("/admin_profile", methods=["POST", "GET"])
+def admin_profile():
+
+    if "admin_username" in session:
+        admin_username = session['admin_username'].title()
+        return render_template('adminProfile.html', admin_username=admin_username)
+    else:
+        return redirect(url_for('admin_login'))
+
+
+@app.route("/user_profile", methods=["POST", "GET"])
+def user_profile():
+    email = session["email"]
+    email_found = user_records.find_one({"email":email})
+    user = session["name"]
+    username = session["name"].split(" ")
+    usn = username[0]
+    
+    if email_found:
+        user_val = email_found['name']
+        email_val = email_found['email']
+        section_val = email_found['section']
+        course_val = email_found['course']
+        birthday_val = email_found['birthday']
+        address_val = email_found['address']
+        about_val = email_found['about']
+        year = 0
+    
+    if section_val == "1A" or section_val == "1B":
+        year = 1
+    elif section_val == "2A" or section_val == "2B":
+        year = 2
+    else:
+        year = 3
+
+    if year == 1:
+        section = "1st year"
+    elif year == 2:
+        section = "2nd year"
+    else:
+        section = "3rd year"
+
+
+    return render_template('userProfile.html', name=user_val, email=email_val, school_year=section, course=course_val, birthday=birthday_val, address=address_val, about=about_val, user=usn, username=user)
+
+@app.route("/edit_profile", methods=["POST", "GET", "PUT"])
+def edit_profile():
+    if "email" in session:
+        email = session["email"]
+        user = session["name"]
+        username = session["name"].split(" ")
+        usn = username[0]
+        
+        if request.method == "POST":
+            if "update_btn" in request.form:
+                IdQuery = {"email": email}
+                about = request.form.get("about")
+                address = request.form.get("address")
+                birthday = request.form.get("birthday")
+                new_vals = {"$set": {"about": about, "address" : address, "birthday" : birthday}}
+                user_records.update_one(IdQuery, new_vals)
+
+            return redirect(url_for('user_profile', user=usn))
+    
+        return render_template("userEditProfile.html", user=usn)
+    else:
+        return redirect(url_for("/login"))
