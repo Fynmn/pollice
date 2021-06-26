@@ -176,6 +176,7 @@
     </div>
 
     <!--Real time update of candidates-->
+    {% if can_name %}
     <div class="filter backdrop-blur-3xl p-6 mb-12 border border-white  shadow-lg" style=" background: linear-gradient(118.32deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%);
               backdrop-filter: blur(100px);
               border-radius: 16px;
@@ -189,13 +190,15 @@
               border-radius: 16px;
               color: #333333;">
           <div class="flex flex-row justify-center">
-            <p class="px-6 text-sm font-light md:text-base"><strong>Natalie Jane
-                Pacificar</strong> has been
-              updated as Vice-Chairperson to Party 2</p>
+            <p class="px-6 text-sm font-light md:text-base">
+              <strong>{{can_name}}</strong> has been
+              updated as {{can_position}} to {{can_party}}
+            </p>
           </div>
         </div>
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
 

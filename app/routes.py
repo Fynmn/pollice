@@ -414,10 +414,12 @@ def updateCandidate():
             candidate_course = request.form.get("candidate_course")
             candidate_year = request.form.get("candidate_year")
 
+
             updateRecordQuery = {"id": candidate_id}
             newvalues = {"$set": {"id": candidate_id, 'party': candidate_party, 'course': candidate_course,
                 'year': candidate_year, "position": candidate_position, "name": candidate_name}}
             candidates_records.update_one(updateRecordQuery, newvalues)
+            return render_template("adminUpdate.html", admin_username=admin_username, can_name=candidate_name.title(), can_position=candidate_position.title(), can_party=candidate_party.title())
 
         return render_template("adminUpdate.html", admin_username=admin_username)
     
@@ -432,31 +434,16 @@ def deleteCandidate():
         if request.method == "POST":
             candidate_id = request.form.get("candidate_id")
 
-            session['delete_can'] = candidate_id
-
-            delete_candidate = session['delete_can']
-
             deleteRecordQuery = {"id": candidate_id}
             candidates_records.find_one_and_delete(deleteRecordQuery)
 
-            return render_template("adminDelete.html", admin_username=admin_username, delete_candidate=delete_candidate)
+            return render_template("adminDelete.html", admin_username=admin_username, delete_candidate=candidate_id)
         return render_template("adminDelete.html",admin_username=admin_username)
     
     else:
         return redirect(url_for("admin_login"))
 
 
-@app.route("/base", methods=["POST", "GET"])
-def base():
-    return render_template("base6.html")
-
-
-# @app.post("/vote")
-# def vote1():
-#     global voted
-#     if "email" in session:
-#         user = session["name"]
-#         section = session["section"]
 
 
 @app.route("/vote", methods=["POST", "GET"])
