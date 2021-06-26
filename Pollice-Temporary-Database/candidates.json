@@ -22,8 +22,8 @@
 {"_id":{"$oid":"60af960029d7618bc4148804"},"id":"1419","party":"party1","course":"BSCS","section":"2B","position":"assistant_auditor","name":"Randy Larne"}
 {"_id":{"$oid":"60af960829d7618bc414880b"},"id":"6045","party":"party2","course":"BSCS","section":"2B","position":"assistant_auditor","name":"Cordelie Lilywhite"}
 {"_id":{"$oid":"60af961029d7618bc4148813"},"id":"1030","party":"party3","course":"BSCS","section":"2B","position":"assistant_auditor","name":"Petronella Harniman"}
-{"_id":{"$oid":"60af961829d7618bc4148819"},"id":"6898","party":"party1","course":"BSCS","section":"2B","position":"business_manager","name":"Cordelie Lilywhite"}
-{"_id":{"$oid":"60af962029d7618bc414881f"},"id":"1839","party":"party2","course":"BSCS","section":"2B","position":"business_manager","name":"Petronella Harniman"}
+{"_id":{"$oid":"60af961829d7618bc4148819"},"id":"6898","party":"party1","course":"BSCS","section":"2B","position":"business_manager","name":"Cordeline Lilywhite"}
+{"_id":{"$oid":"60af962029d7618bc414881f"},"id":"1839","party":"party2","course":"BSCS","section":"2B","position":"business_manager","name":"Petro Tarniman"}
 {"_id":{"$oid":"60af962829d7618bc4148826"},"id":"7104","party":"party3","course":"BSCS","section":"2B","position":"business_manager","name":"Alano Bounds"}
 {"_id":{"$oid":"60af963029d7618bc414882f"},"id":"2774","party":"party1","course":"BSCS","section":"2B","position":"assistant_business_manager","name":"Palm Bromhead"}
 {"_id":{"$oid":"60af963a29d7618bc4148837"},"id":"3060","party":"party2","course":"BSCS","section":"2B","position":"assistant_business_manager","name":"Ripley Potbury"}
