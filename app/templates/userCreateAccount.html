@@ -39,8 +39,9 @@
                                     </svg>
                                     <input type="text" required
                                         class="text-sm text-current font-light bg-transparent focus:outline-none focus:ring-0 p-3 rounded-md w-full overflow-ellipsis md:text-base"
-                                        placeholder="Enter Full Name" name="fullname" id="inputFullName"
-                                        aria-describedby="emailHelp">
+                                        placeholder="Enter Full Name" name="fullname" id="fullname"
+                                        aria-describedby="emailHelp"
+                                        value="{{user}}">
                                 </span>
                             </div>
                         </div>
@@ -58,7 +59,8 @@
                                     </svg>
                                     <input type="email" required
                                         class="text-sm text-current font-light bg-transparent focus:outline-none focus:ring-0 p-3 rounded-md w-full overflow-ellipsis md:text-base"
-                                        name="email" id="InputEmail" placeholder="Enter Email">
+                                        name="email" id="email" placeholder="Enter Email"
+                                        value="{{email}}">
                                 </span>
                             </div>
                         </div>
@@ -79,7 +81,7 @@
                                     <select required
                                         class="text-sm text-opacity-75 font-light focus:outline-none focus:ring-0 p-3 rounded-md appearance-none w-full h-full bg-transparent overflow-ellipsis md:text-base"
                                         name="course" id="course">
-                                        <option value="none" selected disabled>Select Course</option>
+                                        <option value="none" selected disabled hidden>Select Course</option>
                                         <option value="BSCS">BSCS</option>
                                         <option value="BSEMC">BSEMC</option>
                                         <option value="BSEMC">BLIS</option>
@@ -118,7 +120,7 @@
                                     <select required
                                         class="text-sm text-opacity-75 font-light focus:outline-none focus:ring-0 p-3 rounded-md appearance-none w-full bg-transparent overflow-ellipsis md:text-base"
                                         name="section" id="section">
-                                        <option value="none" selected disabled>Select Section</option>
+                                        <option value="none" selected disabled hidden>Select Section</option>
                                         <option value="1A">1-A</option>
                                         <option value="1B">1-B</option>
                                         <option value="2A">2-A</option>
@@ -155,7 +157,8 @@
                                     </svg>
                                     <input type="password" required
                                         class="text-sm text-current font-light bg-transparent focus:outline-none focus:ring-0 p-3 rounded-md w-full overflow-ellipsis md:text-base"
-                                        placeholder="Enter Password" name="password1" id="InputPassword" />
+                                        placeholder="Enter Password" name="password1" id="password1" 
+                                        value="{{password1}}"/>
                                 </span>
                             </div>
                             <p class="text-xs font-light mt-1" style="color: #767a83;">
@@ -178,7 +181,8 @@
                                     </svg>
                                     <input type="password" required
                                         class="text-sm text-current font-light bg-transparent focus:outline-none focus:ring-0 p-3 rounded-md w-full overflow-ellipsis md:text-base"
-                                        placeholder="Repeat Password" name="password2" id="InputPassword2" />
+                                        placeholder="Repeat Password" name="password2" id="password2"
+                                        value="{{password2}}"/>
                                 </span>
                             </div>
                         </div>
@@ -208,7 +212,8 @@
         </form>
     </div>
 </div>
-</div>
-</div>
+<!-- </div>
+</div> -->
+
 
 {% endblock %}

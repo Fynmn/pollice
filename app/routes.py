@@ -81,22 +81,22 @@ def create_account():
         email_found = user_records.find_one({"email": email})
         if user_found:
             message = 'There already is a user by that name'
-            return render_template('userCreateAccount.html', message=message)
+            return render_template('userCreateAccount.html', message=message, user=user, email=email, course=course, section=section, password1=password1, password2=password2)
         if email_found:
             message = 'This email already exists in database'
-            return render_template('userCreateAccount.html', message=message)
+            return render_template('userCreateAccount.html', message=message, user=user, email=email, course=course, section=section, password1=password1, password2=password2)
         if password1 != password2:
             message = 'Passwords should match!'
-            return render_template('userCreateAccount.html', message=message)
+            return render_template('userCreateAccount.html', message=message, user=user, email=email, course=course, section=section, password1=password1, password2=password2)
         if len(password1) < 6:
             message = 'The length of password should be at least 6 characters long'
-            return render_template('userCreateAccount.html', message=message)
+            return render_template('userCreateAccount.html', message=message, user=user, email=email, course=course, section=section, password1=password1, password2=password2)
         if not any([char.isupper() for char in password1]):
             message = 'The password should have atleast one uppercase letter'
-            return render_template('userCreateAccount.html', message=message)
+            return render_template('userCreateAccount.html', message=message, user=user, email=email, course=course, section=section, password1=password1, password2=password2)
         if email_domain not in domain_allowed:
             message = 'Only valid wvsu email addresses are allowed to register.'
-            return render_template('userCreateAccount.html', message=message)
+            return render_template('userCreateAccount.html', message=message, user=user, email=email, course=course, section=section, password1=password1, password2=password2)
         else:
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
             user_input = {'name': user, 'email': email,
@@ -370,19 +370,29 @@ def addCandidate():
 
             # triggeres when post is clicked
             elif request.form.get("submit_post_btn") == "Submit Post":
-                last_record = posts_records.find().sort([('_id', -1)]).limit(1)
-                id_num = int(last_record[0]['post_id']) + 1
-                if id_num < 10:
-                    post_id = "000"+str(id_num)
-                else:
-                    post_id = "00"+str(id_num)
-                post_details = request.form.get("new_post") # gets the text from the textarea named new_post
-                post_name = request.form.get("post_name")
-                # make code that adds these details to a new document in mongodb, post_id(make one), post_name(make one or require one) and the text for the post itself
-                post_add = {"post_id": post_id, "post_name": post_name, "post_details": post_details}
-                posts_records.insert_one(post_add)
+                if posts_records.find_one({'post_id': '0001'}):
+                    last_record = posts_records.find().sort([('_id', -1)]).limit(1)
+                    id_num = int(last_record[0]['post_id']) + 1
+                    if id_num < 10:
+                        post_id = "000"+str(id_num)
+                    else:
+                        post_id = "00"+str(id_num)
+                    post_details = request.form.get("new_post") # gets the text from the textarea named new_post
+                    post_name = request.form.get("post_name")
+                    # make code that adds these details to a new document in mongodb, post_id(make one), post_name(make one or require one) and the text for the post itself
+                    post_add = {"post_id": post_id, "post_name": post_name, "post_details": post_details}
+                    posts_records.insert_one(post_add)
 
-                return render_template("adminAdd.html", admin_username=admin_username, check=check)
+                    return render_template("adminAdd.html", admin_username=admin_username, check=check)
+                
+                else:
+                    post_details = request.form.get("new_post") # gets the text from the textarea named new_post
+                    post_name = request.form.get("post_name")
+                    # make code that adds these details to a new document in mongodb, post_id(make one), post_name(make one or require one) and the text for the post itself
+                    post_add = {"post_id": "0001", "post_name": post_name, "post_details": post_details}
+                    posts_records.insert_one(post_add)
+                    return render_template("adminAdd.html", admin_username=admin_username, check=check)
+
                 # return redirect(url_for("admin/add"))
         
         return render_template("adminAdd.html", admin_username=admin_username, check=check)

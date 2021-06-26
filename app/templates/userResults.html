@@ -106,22 +106,34 @@
                                     class="w-40 row-span-2 col-start-1 items-center justify-items-center text-sm">{{value[0]}}</span>
                                 <span class="w-auto flex justify-end text-sm">
 
-                                    {% if numbers[0] > (numbers[1] and numbers[2]) %}
+                                    {% if numbers[0] > numbers[1] and numbers[0] > numbers[2] %}
                                     <span class=" p-0 pl-2 pr-2 text-green-500">
                                         {{value[2]}} votes 
                                     </span>
-                                    
+
                                     {% elif numbers[0] == numbers[1] == numbers[2] %}
                                     <span class=" p-0 pl-2 pr-2 text-green-500">
                                         {{value[2]}} votes 
                                     </span>
 
-                                    {% elif not(numbers[0] > (numbers[1] and numbers[2])) %}
+                                    {% elif numbers[0] == numbers[1] and numbers[0] > numbers[2] %}
+                                    <span class=" p-0 pl-2 pr-2 text-green-500">
+                                        {{value[2]}} votes 
+                                    </span>
+
+                                    {% elif numbers[0] == numbers[2] and numbers[0] > numbers[1] %}
+                                    <span class=" p-0 pl-2 pr-2 text-green-500">
+                                        {{value[2]}} votes 
+                                    </span>
+
+                                    {% else %}
                                     <span class=" p-0 pl-2 pr-2">
                                         {{value[2]}} votes 
                                     </span>
 
                                     {% endif %}
+
+                                    
 
                                 </span>
                             </span>
@@ -146,7 +158,7 @@
                                 <span class="w-auto flex justify-end text-sm">
 
 
-                                    {% if numbers[1] > (numbers[2] and numbers[0]) %}
+                                    {% if numbers[1] > numbers[2] and numbers[1] > numbers[0] %}
                                     <span class=" p-0 pl-2 pr-2 text-green-500">
                                         {{value[2]}} votes 
                                     </span>
@@ -155,16 +167,24 @@
                                     <span class=" p-0 pl-2 pr-2 text-green-500">
                                         {{value[2]}} votes 
                                     </span>
-                                    
 
-                                    {% elif not(numbers[1] > (numbers[2] and numbers[0])) %}
+                                    {% elif numbers[1] == numbers[0] and numbers[1] > numbers[2] %}
+                                    <span class=" p-0 pl-2 pr-2 text-green-500">
+                                        {{value[2]}} votes 
+                                    </span>
+
+                                    {% elif numbers[1] == numbers[2] and numbers[1] > numbers[0] %}
+                                    <span class=" p-0 pl-2 pr-2 text-green-500">
+                                        {{value[2]}} votes 
+                                    </span>
+
+                                    {% else %}
                                     <span class=" p-0 pl-2 pr-2">
                                         {{value[2]}} votes 
                                     </span>
 
-                                    
-
                                     {% endif %}
+
                                 </span>
                             </span>
                         </label>
@@ -186,7 +206,7 @@
                                     class="w-40 row-span-2 col-start-1 items-center justify-items-center text-sm">{{value[0]}}</span>
                                 <span class="w-auto flex justify-end text-sm">
                                           
-                                    {% if numbers[2] > (numbers[1] and numbers[0]) %}
+                                    {% if numbers[2] > numbers[1] and numbers[2] > numbers[0] %}
                                     <span class=" p-0 pl-2 pr-2 text-green-500">
                                         {{value[2]}} votes 
                                     </span>
@@ -195,14 +215,24 @@
                                     <span class=" p-0 pl-2 pr-2 text-green-500">
                                         {{value[2]}} votes 
                                     </span>
-                                    
 
-                                    {% elif not(numbers[2] > (numbers[1] and numbers[0])) %}
+                                    {% elif numbers[2] == numbers[0] and numbers[2] > numbers[1] %}
+                                    <span class=" p-0 pl-2 pr-2 text-green-500">
+                                        {{value[2]}} votes 
+                                    </span>
+
+                                    {% elif numbers[2] == numbers[1] and numbers[2] > numbers[0] %}
+                                    <span class=" p-0 pl-2 pr-2 text-green-500">
+                                        {{value[2]}} votes 
+                                    </span>
+
+                                    {% else %}
                                     <span class=" p-0 pl-2 pr-2">
                                         {{value[2]}} votes 
                                     </span>
 
                                     {% endif %}
+
                                 </span>
                             </span>
                         </label>
