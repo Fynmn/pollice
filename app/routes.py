@@ -164,7 +164,7 @@ def login():
                 if "email" in session:
                     return redirect(url_for("logged_in"))
                 message = 'Wrong password'
-                return render_template('userLogin.html', message=message)
+                return render_template('userLogin.html', message=message, email=email)
         else:
             message = 'Email not found'
             return render_template('userLogin.html', message=message)
