@@ -18,6 +18,12 @@
 ## Features
 
 ### Key Features
+- [x] User Sign-up, Login, Logout
+- [x] User Can Vote
+- [x] User Can View Results in Real-time
+- [x] User Can View News and Updates
+- [x] User Can View About Page
+- [x] User Can Edit their Profile Page
 - [x] Admin Login, Logout
 - [x] Admin Can Add Candidates
 - [x] Admin Can Toggle ON/OFF the Voting
@@ -26,12 +32,6 @@
 - [x] Admin Can Delete Candidates
 - [x] Admin Can View Candidates
 - [ ] Admin Can View Results Page in Real-time
-- [x] User Sign-up, Login, Logout
-- [x] User Can Vote
-- [x] User Can View Results in Real-time
-- [x] User Can View News and Updates
-- [x] User Can View About Page
-- [x] User Can Edit their Profile Page
 
 ### Other Features
 - [x] Email Validation when user creates an account, only wvsu emails are allowed to create an account
