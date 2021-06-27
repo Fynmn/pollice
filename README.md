@@ -25,7 +25,7 @@
 - [x] Admin Can Update Candidates
 - [x] Admin Can Delete Candidates
 - [x] Admin Can View Candidates
-- [x] Admin Can View Results Page in Real-time
+- [ ] Admin Can View Results Page in Real-time
 - [x] User Sign-up, Login, Logout
 - [x] User Can Vote
 - [x] User Can View Results in Real-time
