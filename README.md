@@ -7,6 +7,7 @@
 - CSS
 - Tailwind CSS Framework via npm package manager
 - JavaScript
+- NodeJS(code processors, styling, packages)
 
 ### Back-End
 - Python
