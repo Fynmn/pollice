@@ -18,17 +18,24 @@
 
 ### Key Features
 - [x] Admin Login, Logout
-- [x] Admin Add Candidates
-- [x] Admin Can Create a Post in News and Updates
-- [x] Admin Update Candidates
-- [x] Admin Delete Candidates
-- [x] Admin View Candidates
+- [x] Admin Can Add Candidates
+- [x] Admin Can Toggle ON/OFF the Voting
+- [x] Admin Can Create a Post in News and Updates in Real-time
+- [x] Admin Can Update Candidates
+- [x] Admin Can Delete Candidates
+- [x] Admin Can View Candidates
 - [x] User Sign-up, Login, Logout
 - [x] User Can Vote
 - [x] User Can See Results in Real-time
 - [x] User Can View News and Updates
-- [x] Voting Toggle Button - toggle on/off button for voting
-- [x] Edit Profile Page
+- [x] User Can See About Page
+- [x] User Can Edit their Profile Page
+
+### Other Features
+- [x] Email Validation when user creates an account, only wvsu emails are allowed to create an account
+- [x] Password Validation when user creates an account - password must contain at least 6 characters, one upper case letter and a number
+- [x] Highest votes are colored
+- [x] Users can only choose one candidate for every position and users Must choose a candidate for every position else they won't be able to submit their votes
 
 
 ### Future Updates
