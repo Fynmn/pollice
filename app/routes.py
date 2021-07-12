@@ -16,7 +16,7 @@ import random
 import pymongo
 import bcrypt
 from pymongo import collection
-from app import app
+from app import app, db, users_records, candidates_records, admins_records, posts_records, votes_records, voting_status
 from app.helpers import *
 from app.forms import *
 from app.models import *
@@ -25,29 +25,40 @@ from app.models import *
 
 model = Models()  # instance of the Model Class
 
-
-
-client = pymongo.MongoClient('localhost', 27017)
 # client = pymongo.MongoClient("mongodb://fynmn:October05@cluster0-shard-00-00.2fb7q.mongodb.net:27017,cluster0-shard-00-01.2fb7q.mongodb.net:27017,cluster0-shard-00-02.2fb7q.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-192j1z-shard-0&authSource=admin&retryWrites=true&w=majority")
+#client = pymongo.MongoClient("mongodb+srv://fynmn:October05@cluster0.2fb7q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 
-db = client.get_database('election-system-test')
-user_records = db.users
-admin_records = db.admins
-candidates_records = db.candidates
-posts_records = db.posts
-# candidates_records_copy = db.candidates_copy
-user_records = db.users
-vote_records = db.votes
-voting_status = db.voting_status
+
+# client = pymongo.MongoClient('localhost', 27017)
+# db = client.get_database('election-system-test')
+
+
+# admins_records = db.admins
+# candidates_records = db.candidates
+# posts_records = db.posts
+# users_records = db.users
+# votes_records = db.votes
+# voting_status = db.voting_status
 
 user_created = False
-
 voted = False
 
 
 @app.errorhandler(404)
 def resource_not_found(e):
     return render_template('404.html'), 404
+
+@app.errorhandler(403)
+def resource_not_found(e):
+    return render_template('404.html'), 403
+
+@app.errorhandler(410)
+def resource_not_found(e):
+    return render_template('404.html'), 410
+
+@app.errorhandler(500)
+def resource_not_found(e):
+    return render_template('404.html'), 500
 
 @app.route("/", methods=['post', 'get'])
 def landing_page():
@@ -77,8 +88,8 @@ def create_account():
         email_domain = email.split('@')[-1]
         
 
-        user_found = user_records.find_one({"name": user})
-        email_found = user_records.find_one({"email": email})
+        user_found = users_records.find_one({"name": user})
+        email_found = users_records.find_one({"email": email})
         
         def hasNumbers(inputString):
             return any(char.isdigit() for char in inputString)
@@ -109,9 +120,9 @@ def create_account():
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
             user_input = {'name': user, 'email': email,
                 'password': hashed, 'course' : course, 'section': section, 'about': "Insert descrption here", 'birthday': "None", 'address': "None", 'voted': False}
-            user_records.insert_one(user_input)
+            users_records.insert_one(user_input)
 
-            user_data = user_records.find_one({"email": email})
+            user_data = users_records.find_one({"email": email})
             new_email = user_data['email']
             session["email"] = new_email
             session["section"] = section
@@ -152,7 +163,7 @@ def login():
         password = request.form.get("password")
 
         # returns the document of the user
-        email_found = user_records.find_one({"email": email})
+        email_found = users_records.find_one({"email": email})
         if email_found:
             email_val = email_found['email']
             section_val = email_found['section']
@@ -202,14 +213,12 @@ def admin():
 @app.route("/admin_login", methods=["POST", "GET"])
 def admin_login():
     message = ''
-    
-        
 
     if request.method == "POST":
         username = request.form.get("admin_username")
         password = request.form.get("admin_password")
 
-        username_found = admin_records.find_one({"username": username})
+        username_found = admins_records.find_one({"username": username})
         session["admin_username"] = username
         admin_username = session["admin_username"]
 
@@ -229,7 +238,8 @@ def admin_login():
         else:
             message = 'Username not found'
             return render_template('adminLogin.html', message=message, admin_username=admin_username)
-    return render_template('adminLogin.html', message=message)
+    else:
+        return render_template('adminLogin.html', message=message)
 
 
 @app.route("/admin_panel", methods=["POST", "GET"])
@@ -480,59 +490,6 @@ def vote():
             else:
                 voted = True
             
-            
-
-        
-        
-        # listOfCandidates = model.pullCandidates()
-        # print(listOfCandidates)
-        # chairperson = []
-        # vice_chairperson = []
-        # secretary = []
-        # assistant_secretary = []
-        # treasurer = []
-        # assistant_treasurer = []
-        # auditor = []
-        # assistant_auditor = []
-        # business_manager = []
-        # assistant_business_manager = []
-        # pio = []
-        # assistant_pio = []
-        # representative1 = []
-        # representative2 = []
-
-        # x = True
-        # while x:
-        #     for num, i in enumerate(listOfCandidates):
-        #         if i[1] == "chairperson":
-        #             chairperson.append(i[0])
-        #         elif i[1] == "vice_chairperson":
-        #             vice_chairperson.append(i[0])
-        #         elif i[1] == "secretary":
-        #             secretary.append(i[0])
-        #         elif i[1] == "assistant_secretary":
-        #             assistant_secretary.append(i[0])
-        #         elif i[1] == "treasurer":
-        #             treasurer.append(i[0])
-        #         elif i[1] == "assistant_treasurer":
-        #             assistant_treasurer.append(i[0])
-        #         elif i[1] == "auditor":
-        #             auditor.append(i[0])
-        #         elif i[1] == "assistant_auditor":
-        #             assistant_auditor.append(i[0])
-        #         elif i[1] == "business_manager":
-        #             business_manager.append(i[0])
-        #         elif i[1] == "assistant_business_manager":
-        #             assistant_business_manager.append(i[0])
-        #         elif i[1] == "pio":
-        #             pio.append(i[0])
-        #         elif i[1] == "assistant_pio":
-        #             assistant_pio.append(i[0])
-        #         elif i[1] == "representative1":
-        #             representative1.append(i[0])
-        #         elif i[1] == "representative2":
-        #             representative2.append(i[0])
-        #     x = False
 
 
         if request.method == "POST":
@@ -561,12 +518,12 @@ def vote():
                 candidate_id = model.getIDbyName(str(user))
                 updateRecordQuery = {"_id": candidate_id}
                 newvalues = {"$set": {"voted": True}}
-                user_records.update_one(updateRecordQuery, newvalues)
+                users_records.update_one(updateRecordQuery, newvalues)
 
                 votes_add = {"name": str(user), "chairperson": chairperson_vote, "vice_chairperson" : vice_chairperson_vote, "secretary" : secretary_vote, "assistant_secretary" : assistant_secretary_vote, "treasurer" : treasurer_vote, "assistant_treasurer" : assistant_treasurer_vote, "auditor":
                           auditor_vote, "assistant_auditor" : assistant_auditor_vote, "business_manager" : business_manager_vote, "assistant_business_manager" : assistant_business_manager_vote, "pio" : pio_vote, "assistant_pio" : assistant_pio_vote, "representative1" : representative1_vote, "representative2" :representative2_vote}
                     
-                vote_records.insert_one(votes_add)
+                votes_records.insert_one(votes_add)
 
                 if model.getVoted(str(user)):
                     voted = True
@@ -621,7 +578,7 @@ def admin_profile():
 @app.route("/user_profile", methods=["POST", "GET"])
 def user_profile():
     email = session["email"]
-    email_found = user_records.find_one({"email":email})
+    email_found = users_records.find_one({"email":email})
     user = session["name"]
     username = session["name"].split(" ")
     usn = username[0]
@@ -676,7 +633,7 @@ def edit_profile():
                 address = request.form.get("address")
                 birthday = request.form.get("birthday")
                 new_vals = {"$set": {"about": about, "address" : address, "birthday" : birthday}}
-                user_records.update_one(IdQuery, new_vals)
+                users_records.update_one(IdQuery, new_vals)
 
             return redirect(url_for('user_profile', user=usn))
     
